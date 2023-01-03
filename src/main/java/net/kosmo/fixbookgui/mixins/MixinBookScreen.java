@@ -14,12 +14,17 @@ import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
+
 import java.util.List;
 
 @Mixin(BookScreen.class)
 public abstract class MixinBookScreen extends Screen {
-    @Shadow @Final
+    @Shadow
+    @Final
     public static Identifier BOOK_TEXTURE;
     @Shadow
     private int cachedPageIndex;
@@ -38,7 +43,8 @@ public abstract class MixinBookScreen extends Screen {
     @Shadow
     private PageTurnWidget previousPageButton;
 
-    @Shadow @Final
+    @Shadow
+    @Final
     private boolean pageTurnSound;
 
     protected MixinBookScreen() {
@@ -68,9 +74,10 @@ public abstract class MixinBookScreen extends Screen {
      */
     @Overwrite
     public void addCloseButton() {
-//        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, 196, 200, 20, ScreenTexts.DONE, button -> this.client.setScreen(null)));
+//        this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> this.client.setScreen(null)).dimensions(this.width / 2 - 100, 196, 200, 20).build());
         int y = (this.height - 192) / 2;
-        this.addDrawableChild(new ButtonWidget(this.width / 2 - 100, y + 196, 200, 20, ScreenTexts.DONE, (button) -> this.client.setScreen(null)));
+        this.addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, button -> this.client.setScreen(null)).dimensions(this.width / 2 - 100, y + 196, 200, 20).build());
+
     }
 
 
@@ -99,7 +106,7 @@ public abstract class MixinBookScreen extends Screen {
     @Overwrite
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.renderBackground(matrices);
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.setShaderTexture(0, BOOK_TEXTURE);
         int i = (this.width - 192) / 2;
@@ -125,7 +132,7 @@ public abstract class MixinBookScreen extends Screen {
             OrderedText orderedText = this.cachedPage.get(m);
             // Start bug fix
 //            this.textRenderer.draw(matrices, orderedText, (float) (i + 36), (float)  (32 + m * this.textRenderer.fontHeight), 0);
-            this.textRenderer.draw(matrices, orderedText, (float) (i + 36), (float)  y + (32 + m * this.textRenderer.fontHeight), 0);
+            this.textRenderer.draw(matrices, orderedText, (float) (i + 36), (float) y + (32 + m * this.textRenderer.fontHeight), 0);
             // End bug fix
         }
         Style style = this.getTextStyleAt(mouseX, mouseY);
