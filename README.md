@@ -1,9 +1,12 @@
-# Fabric Example Mod
+# Fix book gui
+This mod intent to fix [MC-61489](https://bugs.mojang.com/projects/MC/issues/MC-61489)
 
-## Setup
+This mod is more a POC and a little project to learn who mixin works than a real thing, but it works.
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+I haven't fixed the gui when you write a book, maybe one day if Mojang still hasn't fixed it I will.
 
-## License
+Most of the fix come from [mworzala's gist](https://gist.github.com/mworzala/9a8d86803784c9c81aac77d9a7f9fb2b) so credit to him for the fix, I just made it a mod. (He is not involved in the creation of this mod)
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+
+### Comparisons
+<img alt="comparison with and without the mod" src="./diff.jpg">
