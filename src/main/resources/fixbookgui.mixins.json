@@ -6,7 +6,9 @@
   "mixins": [
   ],
   "client": [
-    "MixinBookScreen"
+    "MixinBookScreen",
+    "MixinBookEditScreen",
+    "MixinLecternScreen"
   ],
   "injectors": {
     "defaultRequire": 1
