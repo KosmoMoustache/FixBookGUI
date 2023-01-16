@@ -1,13 +1,34 @@
 # Fix book gui
+
 This mod intent to fix [MC-61489](https://bugs.mojang.com/projects/MC/issues/MC-61489)
 
-This mod is more a POC and a little project to learn who mixin works than a real thing, but it works.
+Most of the fix come from [mworzala's gist](https://gist.github.com/mworzala/9a8d86803784c9c81aac77d9a7f9fb2b) so credit
+to them for the fix, I just made it a mod. (They are not involved in the creation of it)
 
-I haven't fixed the gui when you write a book, maybe one day if Mojang still hasn't fixed it I will.
+Require [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api).
 
-Most of the fix come from [mworzala's gist](https://gist.github.com/mworzala/9a8d86803784c9c81aac77d9a7f9fb2b) so credit to him for the fix, I just made it a mod. (He is not involved in the creation of this mod)
+### Comparison
 
-Need [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) to work.
+<div>
+    <table>
+        <tr>
+            <td align="middle">
+            <img alt="Difference: Book" src="./img/book.jpg">
+            <figcaption align="middle">Book</figcaption>
+            </td>
+        </tr>
+        <tr>
+            <td align="middle">
+                <img alt="Difference: Writing book" src="./img/write.jpg">
+                <figcaption align="middle">Writing book</figcaption>
+            </td>
+        </tr>
+        <tr>
+            <td align="middle">
+                <img alt="Difference: Lectern" src="./img/lectern.jpg">
+                <figcaption align="middle">Lectern</figcaption>
+            </td>
+        </tr>
+    </table>
+</div>
 
-### Comparisons
-<img alt="comparison with and without the mod" src="./diff.jpg">
