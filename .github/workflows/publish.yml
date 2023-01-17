@@ -53,6 +53,8 @@ jobs:
           version-type: release
           changelog-file: CHANGELOG.md
 
+          files-primary: build/libs/*-@(sources).jar
+
           loaders: fabric
           game-versions: "${{env.MINECRAFT_VERSION}}"
           java: "${{env.JAVA_VERSION}}"
