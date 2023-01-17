@@ -16,7 +16,7 @@
     "sources": "https://github.com/KosmoMoustache/FixBookGUI"
   },
 
-  "license": "CC0-1.0",
+  "license": "LGPL-3.0-only",
   "icon": "assets/fixbookgui/icon.png",
 
   "environment": "client",
