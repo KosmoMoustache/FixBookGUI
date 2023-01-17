@@ -1,13 +1,11 @@
 name: Publish on Curseforge & Modrinth
 
-on: [ pull_request, workflow_dispatch ]
+on: [ workflow_dispatch ]
 
 env:
   MINECRAFT_VERSION: 1.19.2
   JAVA_VERSION: 17
   RELEASE_NAME: FixBookGUI
-  MODRINTH_TOKEN: ${{ secrets.PUBLISH_MODRINTH_TOKEN }}
-  CURSEFORGE_TOKEN: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
 
 permissions:
   contents: write
@@ -41,17 +39,13 @@ jobs:
         uses: Kir-Antipov/mc-publish@v3.2
         with:
           curseforge-id: 811449
-          curseforge-token: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
-
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          
           modrinth-id: myKgAJq6
-          modrinth-token: ${{ secrets.PUBLISH_MODRINTH_TOKEN }}
-
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          
+          loaders: fabric
           name: ${{env.RELEASE_NAME}}
           version-type: release
           changelog-file: CHANGELOG.md
-
           files: build/libs/!(*-@(dev|sources|javadoc)).jar
-
-          loaders: fabric
-          game-versions: ${{env.MINECRAFT_VERSION}}
-          java: ${{env.JAVA_VERSION}}
