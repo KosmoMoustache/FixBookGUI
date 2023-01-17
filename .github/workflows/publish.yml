@@ -1,4 +1,4 @@
-name: Publish on Github, Curseforge & Modrinth
+name: Publish on Curseforge & Modrinth
 
 on: [ pull_request, workflow_dispatch ]
 
