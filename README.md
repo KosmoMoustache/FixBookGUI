@@ -5,8 +5,6 @@ This mod intent to fix [MC-61489](https://bugs.mojang.com/projects/MC/issues/MC-
 Most of the fix come from [mworzala's gist](https://gist.github.com/mworzala/9a8d86803784c9c81aac77d9a7f9fb2b) so credit
 to them for the fix, I just made it a mod. (They are not involved in the creation of it)
 
-Require [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api).
-
 ### Comparison
 
 <div>
