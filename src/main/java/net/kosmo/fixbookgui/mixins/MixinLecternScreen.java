@@ -6,6 +6,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
+/**
+ * @author KosmoMoustache
+ * @reason <a href="https://bugs.mojang.com/projects/MC/issues/MC-61489">Minecraft Bug Tracker</a>
+ */
 @Mixin(LecternScreen.class)
 public abstract class MixinLecternScreen extends Screen {
     protected MixinLecternScreen() {
