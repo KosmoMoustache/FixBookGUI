@@ -4,6 +4,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.BookScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.PageTurnWidget;
+import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -16,18 +17,17 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  */
 @Mixin(BookScreen.class)
 public abstract class MixinBookScreen extends Screen {
-
     protected MixinBookScreen() {
         super(null);
     }
 
-    @ModifyArg(method = "addCloseButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/ButtonWidget$Builder;dimensions(IIII)Lnet/minecraft/client/gui/widget/ButtonWidget$Builder;"), index = 1)
-    public int fbg$addCloseButton(int y) {
-        return y + (this.height - 192) / 2;
+    @Redirect(method = "addCloseButton", at = @At(value = "NEW", target = "net/minecraft/client/gui/widget/ButtonWidget"))
+    public ButtonWidget fbg$addCloseButton(int x, int y, int width, int height, Text message, ButtonWidget.PressAction onPress) {
+        return new ButtonWidget(x, y + (this.height - 192) / 2, width, height, message, onPress);
     }
 
     @Redirect(method = "addPageButtons", at = @At(value = "NEW", target = "net/minecraft/client/gui/widget/PageTurnWidget"))
-    public PageTurnWidget fbg$addPageButtons(int x, int y, boolean isNextPageButton, ButtonWidget.PressAction action, boolean playPageTurnSound) {
+    public PageTurnWidget fbg$addPageButton(int x, int y, boolean isNextPageButton, ButtonWidget.PressAction action, boolean playPageTurnSound) {
         return new PageTurnWidget(x, y + (this.height - 192) / 2, isNextPageButton, action, playPageTurnSound);
     }
 

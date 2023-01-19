@@ -4,7 +4,7 @@
   "version": "1.0.1",
 
   "name": "Fix Book Gui Mod",
-  "description": "Fix MC-61489",
+  "description": "Fix book gui (see MC-61489)",
   "authors": [
     "KosmoMoustache"
   ],

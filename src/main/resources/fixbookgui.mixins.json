@@ -3,11 +3,9 @@
   "minVersion": "0.8",
   "package": "net.kosmo.fixbookgui.mixins",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [
-  ],
   "client": [
-    "MixinBookScreen",
     "MixinBookEditScreen",
+    "MixinBookScreen",
     "MixinLecternScreen"
   ],
   "injectors": {
