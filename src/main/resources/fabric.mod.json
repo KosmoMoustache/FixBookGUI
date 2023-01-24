@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "id": "fixbookgui",
-  "version": "1.0.1",
+  "version": "1.0.2",
 
   "name": "Fix Book Gui Mod",
-  "description": "Fix MC-61489",
+  "description": "Fix book gui (MC-61489)",
   "authors": [
     "KosmoMoustache"
   ],
@@ -30,7 +30,7 @@
   ],
 
   "depends": {
-    "minecraft": ">=1.19.2",
+    "minecraft": ">=1.19.3",
     "fabricloader": ">=0.4.0"
   }
 }
