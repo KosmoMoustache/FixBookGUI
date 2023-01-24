@@ -5,6 +5,7 @@ import net.minecraft.client.gui.screen.ingame.BookScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.PageTurnWidget;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -17,8 +18,20 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(BookScreen.class)
 public abstract class MixinBookScreen extends Screen {
 
+
     protected MixinBookScreen() {
         super(null);
+    }
+
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/BookScreen;getTextStyleAt(DD)Lnet/minecraft/text/Style;"), index = 1)
+    public double fbg$getTextStyleAt(double y) {
+        return y - (float)(this.height - 192) / 2;
+    }
+    @Shadow public abstract boolean mouseClicked(double mouseX, double mouseY, int button);
+
+    @ModifyArg(method= "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/BookScreen;getTextStyleAt(DD)Lnet/minecraft/text/Style;"), index = 1)
+    public double fbg$mouseClicked(double y) {
+        return y - (float)(this.height - 192) / 2;
     }
 
     @ModifyArg(method = "addCloseButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/ButtonWidget$Builder;dimensions(IIII)Lnet/minecraft/client/gui/widget/ButtonWidget$Builder;"), index = 1)
