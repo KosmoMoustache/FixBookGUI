@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "fixbookgui",
-  "version": "1.0.2",
+  "version": "1.1",
 
   "name": "Fix Book Gui Mod",
   "description": "Fix book gui (MC-61489)",
