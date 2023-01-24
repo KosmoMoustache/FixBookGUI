@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "id": "fixbookgui",
-  "version": "1.0.1",
+  "version": "${version}",
 
   "name": "Fix Book Gui Mod",
-  "description": "Fix book gui (see MC-61489)",
+  "description": "Fix book gui (MC-61489)",
   "authors": [
     "KosmoMoustache"
   ],
