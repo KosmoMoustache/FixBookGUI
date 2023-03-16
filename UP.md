@@ -5,4 +5,5 @@
     - Minecraft version
     - release name
     - mod version
+    - game versions
 - CHANGELOG.md

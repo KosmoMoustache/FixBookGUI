@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "fixbookgui",
-  "version": "1.1",
+  "version": "1.2",
 
   "name": "Fix Book Gui Mod",
   "description": "Fix book gui (MC-61489)",
@@ -28,9 +28,8 @@
   "mixins": [
     "fixbookgui.mixins.json"
   ],
-
   "depends": {
-    "minecraft": ">=1.19.3",
+    "minecraft": ">=1.19.4",
     "fabricloader": ">=0.4.0"
   }
 }

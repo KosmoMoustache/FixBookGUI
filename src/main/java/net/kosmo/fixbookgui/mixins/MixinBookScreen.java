@@ -59,3 +59,4 @@ public abstract class MixinBookScreen extends Screen {
         return (float) (this.height - 192) / 2 + y;
     }
 }
+
