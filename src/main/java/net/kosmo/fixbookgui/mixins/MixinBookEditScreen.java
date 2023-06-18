@@ -26,7 +26,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public abstract class MixinBookEditScreen extends Screen {
 
     @Final
-    @Shadow
     static int HEIGHT;
 
     @Shadow private boolean signing;
