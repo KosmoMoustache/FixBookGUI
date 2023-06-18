@@ -1,10 +1,9 @@
 {
   "schemaVersion": 1,
   "id": "fixbookgui",
-  "version": "1.0.1",
-
+  "version": "${version}",
   "name": "Fix Book Gui Mod",
-  "description": "Fix MC-61489",
+  "description": "Fix book gui (MC-61489)",
   "authors": [
     "KosmoMoustache"
   ],
@@ -18,7 +17,6 @@
 
   "license": "LGPL-3.0-only",
   "icon": "assets/fixbookgui/icon.png",
-
   "environment": "client",
   "entrypoints": {
     "client": [
@@ -28,9 +26,8 @@
   "mixins": [
     "fixbookgui.mixins.json"
   ],
-
   "depends": {
-    "minecraft": "~1.19.2",
+    "minecraft": "1.20.1",
     "fabricloader": ">=0.4.0"
   }
 }
