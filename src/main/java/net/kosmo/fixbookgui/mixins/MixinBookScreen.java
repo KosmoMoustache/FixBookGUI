@@ -6,7 +6,6 @@ import net.minecraft.client.gui.screen.ingame.BookScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.PageTurnWidget;
 import net.minecraft.screen.ScreenTexts;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -21,37 +20,35 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(BookScreen.class)
 public abstract class MixinBookScreen extends Screen {
 
-    @Shadow
-    @Final
-    protected static int HEIGHT;
-
-    @Shadow public abstract boolean mouseClicked(double mouseX, double mouseY, int button);
-
-
     protected MixinBookScreen() {
         super(null);
     }
 
+    @Shadow
+    public abstract boolean mouseClicked(double mouseX, double mouseY, int button);
+
     private int getY() {
-        return (this.height - HEIGHT) / 3 + 196;
+        return (this.height - 192) / 3 + 196;
     }
 
     private int getY(int y) {
-        return (this.height - HEIGHT) / 3 + y;
+        return (this.height - 192) / 3 + y;
     }
 
     @ModifyArg(method = "render", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/gui/screen/ingame/BookScreen;getTextStyleAt(DD)Lnet/minecraft/text/Style;"),
             index = 1
     )
-    public double fbg$getTextStyleAt(double y) { return y - (float)(this.height - 192) / 2; }
+    public double fbg$getTextStyleAt(double y) {
+        return y - (float) (this.height - 192) / 2;
+    }
 
-    @ModifyArg(method= "mouseClicked", at = @At(value = "INVOKE",
+    @ModifyArg(method = "mouseClicked", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/gui/screen/ingame/BookScreen;getTextStyleAt(DD)Lnet/minecraft/text/Style;"),
             index = 1
     )
     public double fbg$mouseClicked(double y) {
-        return y - (float)(this.height - 192) / 2;
+        return y - (float) (this.height - 192) / 2;
     }
 
     @ModifyArg(method = "addCloseButton", at = @At(value = "INVOKE",
@@ -62,7 +59,7 @@ public abstract class MixinBookScreen extends Screen {
                 .dimensions(this.width / 2 - 100, getY(), 200, 20).build();
     }
 
-    @Redirect(method="addPageButtons", at = @At(value="NEW",
+    @Redirect(method = "addPageButtons", at = @At(value = "NEW",
             target = "(IIZLnet/minecraft/client/gui/widget/ButtonWidget$PressAction;Z)Lnet/minecraft/client/gui/widget/PageTurnWidget;")
     )
     public PageTurnWidget fbg$addPageButtons(int x, int y, boolean isNextPageButton, ButtonWidget.PressAction action, boolean playPageTurnSound) {

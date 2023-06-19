@@ -19,17 +19,16 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
  */
 @Mixin(LecternScreen.class)
 public abstract class MixinLecternScreen extends BookScreen implements ScreenHandlerProvider<LecternScreenHandler> {
+    protected MixinLecternScreen() {
+        super(null);
+    }
 
     @Shadow
     private void sendButtonPressPacket(int i) {
     }
 
-    protected MixinLecternScreen() {
-        super(null);
-    }
-
     private int getY() {
-        return (this.height - HEIGHT) / 3 + 196;
+        return (this.height - 192) / 3 + 196;
     }
 
     @ModifyArg(method = "addCloseButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/LecternScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;", ordinal = 0))
@@ -38,7 +37,7 @@ public abstract class MixinLecternScreen extends BookScreen implements ScreenHan
                 .dimensions(this.width / 2 - 100, getY(), 98, 20).build();
     }
 
-    @ModifyArg(method = "addCloseButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/LecternScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;", ordinal =1))
+    @ModifyArg(method = "addCloseButton", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/LecternScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;", ordinal = 1))
     public Element fbg$addCloseButton2(Element par1) {
         return ButtonWidget.builder(Text.translatable("lectern.take_book"), (button) -> this.sendButtonPressPacket(3))
                 .dimensions(this.width / 2 + 2, getY(), 98, 20).build();

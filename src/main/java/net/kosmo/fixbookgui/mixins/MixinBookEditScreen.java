@@ -11,7 +11,6 @@ import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Text;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,35 +23,36 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  */
 @Mixin(BookEditScreen.class)
 public abstract class MixinBookEditScreen extends Screen {
-
-    @Final
-    static int HEIGHT;
-
-    @Shadow private boolean signing;
-    @Shadow private void finalizeBook(boolean sign) {}
-
     @Shadow
-    private void updateButtons() {}
+    private boolean signing;
 
     protected MixinBookEditScreen() {
         super(null);
     }
 
+    @Shadow
+    private void finalizeBook(boolean sign) {
+    }
+
+    @Shadow
+    private void updateButtons() {
+    }
+
     private int getY() {
-        return (this.height - HEIGHT) / 3 + 196;
+        return (this.height - 192) / 3 + 196;
     }
 
     private int getY(int y) {
-        return (this.height - HEIGHT) / 3 + y;
+        return (this.height - 192) / 3 + y;
     }
 
     // Sign Button
-    @ModifyArg(method = "init", at=@At(value="INVOKE",
-            target="Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;",
+    @ModifyArg(method = "init", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;",
             ordinal = 0)
     )
     public Element fbg$initSignButton(Element par1) {
-        return ButtonWidget.builder(Text.translatable("book.signButton"),button -> {
+        return ButtonWidget.builder(Text.translatable("book.signButton"), button -> {
             this.signing = true;
             this.updateButtons();
         }).dimensions(this.width / 2 - 100, getY(), 98, 20).build();
@@ -97,7 +97,7 @@ public abstract class MixinBookEditScreen extends Screen {
     }
 
     // Page buttons
-    @Redirect(method="init", at = @At(value="NEW",
+    @Redirect(method = "init", at = @At(value = "NEW",
             target = "(IIZLnet/minecraft/client/gui/widget/ButtonWidget$PressAction;Z)Lnet/minecraft/client/gui/widget/PageTurnWidget;")
     )
     public PageTurnWidget fbg$addPageButtons(int x, int y, boolean isNextPageButton, ButtonWidget.PressAction action, boolean playPageTurnSound) {
@@ -138,8 +138,8 @@ public abstract class MixinBookEditScreen extends Screen {
         context.drawTextWrapped(textRenderer, text, x, getY(y), width, color);
     }
 
-    @Redirect(method="drawCursor", at=@At(value="INVOKE",
-            target="Lnet/minecraft/client/gui/DrawContext;fill(IIIII)V")
+    @Redirect(method = "drawCursor", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/gui/DrawContext;fill(IIIII)V")
     )
     public void fbg$drawCursor1(DrawContext context, int x1, int y1, int x2, int y2, int color) {
         context.fill(x1, getY(y1), x2, getY(y2), color);
@@ -159,13 +159,14 @@ public abstract class MixinBookEditScreen extends Screen {
             index = 2
     )
     public int fbg$drawSelectionFillY(int j) {
-        return j + (this.height - HEIGHT) / 2;
+        return j + (this.height - 192) / 2;
     }
+
     @ModifyArg(method = "drawSelection", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/gui/DrawContext;fill(Lnet/minecraft/client/render/RenderLayer;IIIII)V"),
             index = 4
     )
     public int fbg$drawSelectionFillHeight(int l) {
-        return l + (this.height - HEIGHT) / 2;
+        return l + (this.height - 192) / 2;
     }
 }
