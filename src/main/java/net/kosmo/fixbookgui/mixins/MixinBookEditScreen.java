@@ -65,7 +65,7 @@ public abstract class MixinBookEditScreen extends Screen {
     )
     public Element fbg$initDoneButton(Element par1) {
         return ButtonWidget.builder(ScreenTexts.DONE, button -> this.close())
-                .dimensions(this.width / 2 + 2, getY(), 98, 20).build();
+                .dimensions(this.width / 2 - 100, getY(), 98, 20).build();
     }
 
     // Finalize Button (Sign)
