@@ -64,8 +64,11 @@ public abstract class MixinBookEditScreen extends Screen {
             ordinal = 1)
     )
     public Element fbg$initDoneButton(Element par1) {
-        return ButtonWidget.builder(ScreenTexts.DONE, button -> this.close())
-                .dimensions(this.width / 2 - 100, getY(), 98, 20).build();
+        return ButtonWidget.builder(ScreenTexts.DONE, button ->{
+            this.client.setScreen((Screen)null);
+            this.finalizeBook(false);
+                })
+                .dimensions(this.width / 2 + 2, getY(), 98, 20).build();
     }
 
     // Finalize Button (Sign)
@@ -159,7 +162,7 @@ public abstract class MixinBookEditScreen extends Screen {
             index = 2
     )
     public int fbg$drawSelectionFillY(int j) {
-        return j + (this.height - 192) / 2;
+        return getY(j);
     }
 
     @ModifyArg(method = "drawSelection", at = @At(value = "INVOKE",
@@ -167,6 +170,6 @@ public abstract class MixinBookEditScreen extends Screen {
             index = 4
     )
     public int fbg$drawSelectionFillHeight(int l) {
-        return l + (this.height - 192) / 2;
+        return getY(l);
     }
 }
