@@ -107,8 +107,8 @@ public abstract class MixinBookEditScreen extends Screen {
         return new PageTurnWidget(x, getY(y), isNextPageButton, action, playPageTurnSound);
     }
 
-    // drawTexture
-    @ModifyArg(method = "render", at = @At(value = "INVOKE",
+   // drawTexture
+    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"),
             index = 2
     )
