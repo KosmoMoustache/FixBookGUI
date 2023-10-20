@@ -67,7 +67,7 @@ public abstract class MixinBookScreen extends Screen {
     }
 
     // drawTexture
-    @ModifyArg(method = "render", at = @At(value = "INVOKE",
+    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"),
             index = 2
     )
