@@ -40,7 +40,7 @@ public abstract class MixinBookScreen extends Screen {
             index = 1
     )
     public double fbg$getTextStyleAt(double y) {
-        return y - (float) (this.height - 192) / 2;
+        return  y - (float) (this.height - 192) / 3;
     }
 
     @ModifyArg(method = "mouseClicked", at = @At(value = "INVOKE",
@@ -48,7 +48,7 @@ public abstract class MixinBookScreen extends Screen {
             index = 1
     )
     public double fbg$mouseClicked(double y) {
-        return y - (float) (this.height - 192) / 2;
+        return y - (float) (this.height - 192) / 3;
     }
 
     @ModifyArg(method = "addCloseButton", at = @At(value = "INVOKE",
@@ -67,7 +67,7 @@ public abstract class MixinBookScreen extends Screen {
     }
 
     // drawTexture
-    @ModifyArg(method = "render", at = @At(value = "INVOKE",
+    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"),
             index = 2
     )

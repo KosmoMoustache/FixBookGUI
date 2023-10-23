@@ -64,7 +64,10 @@ public abstract class MixinBookEditScreen extends Screen {
             ordinal = 1)
     )
     public Element fbg$initDoneButton(Element par1) {
-        return ButtonWidget.builder(ScreenTexts.DONE, button -> this.close())
+        return ButtonWidget.builder(ScreenTexts.DONE, button ->{
+            this.client.setScreen((Screen)null);
+            this.finalizeBook(false);
+                })
                 .dimensions(this.width / 2 + 2, getY(), 98, 20).build();
     }
 
@@ -104,8 +107,8 @@ public abstract class MixinBookEditScreen extends Screen {
         return new PageTurnWidget(x, getY(y), isNextPageButton, action, playPageTurnSound);
     }
 
-    // drawTexture
-    @ModifyArg(method = "render", at = @At(value = "INVOKE",
+   // drawTexture
+    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"),
             index = 2
     )
@@ -159,7 +162,7 @@ public abstract class MixinBookEditScreen extends Screen {
             index = 2
     )
     public int fbg$drawSelectionFillY(int j) {
-        return j + (this.height - 192) / 2;
+        return getY(j);
     }
 
     @ModifyArg(method = "drawSelection", at = @At(value = "INVOKE",
@@ -167,6 +170,6 @@ public abstract class MixinBookEditScreen extends Screen {
             index = 4
     )
     public int fbg$drawSelectionFillHeight(int l) {
-        return l + (this.height - 192) / 2;
+        return getY(l);
     }
 }
