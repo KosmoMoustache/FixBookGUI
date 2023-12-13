@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- [#10](https://github.com/KosmoMoustache/FixBookGUI/issues/10)
+- [Book edits not being saved upon exiting GUI](https://github.com/KosmoMoustache/FixBookGUI/issues/10)
 - Wrong 'Done' button function callback
 - Buttons placement
 - Mouse hove style position

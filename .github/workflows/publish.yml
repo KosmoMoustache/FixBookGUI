@@ -15,23 +15,23 @@ jobs:
       - name: Setup JDK 17
         uses: actions/setup-java@v3
         with:
-          distribution: "temurin"
-          java-version: 17
+          java-version: '17'
+          distribution: 'temurin'
 
-      - name: Grand execute permission to gradlew
+      - name: Grant execute permission to gradlew
         run: chmod +x gradlew
 
-      - name: build
+      - name: Build with Gradle
         run: ./gradlew build
 
       - name: Set up Environment Variables
         run: |
           echo "MINECRAFT_VERSION="$(grep 'minecraft_version' gradle.properties | cut -f2- -d=)"" >> $GITHUB_ENV
           echo "MOD_VERSION="$(grep 'mod_version' gradle.properties | cut -f2- -d=)"" >> $GITHUB_ENV
-
+          
       - name: Install changelog parser
         uses: taiki-e/install-action@parse-changelog
-
+        
       - name: Parse changelog
         run: parse-changelog CHANGELOG.md ${{ env.MOD_VERSION }} > changes.md
 
