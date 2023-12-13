@@ -15,43 +15,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+### Changed
+
 ### Fixed
 
 ### Security
 
-## [1.5] - 2023-10-23
+## [1.5.0] - 2023-10-2023
 
 ### Added
 
-- 1.20.2 support thanks to [YoungSoulluoS](https://github.com/YoungSoulluoS)
+- Support to 1.20.2 tanks to YoungSoulluoS
 
-## [1.4.1] - 2023-06-23
+## [1.4.1] - 2023-07-23
 
 ### Fixed
 
 - [Book edits not being saved upon exiting GUI](https://github.com/KosmoMoustache/FixBookGUI/issues/10)
+- Wrong 'Done' button function callback
+- Buttons placement
+- Mouse hove style position
 
-## [1.4] - 2023-01-19
-
-### Added
-
-- 1.20.1 support
-
-## [1.2] - 2023-03-16
-
-### Added
-
-- 1.19.4 support
-
-## [1.1] - 2023-01-24
+## [1.1.0] - 2023-01-2023
 
 ### Fixed
 
-- Mouse clicks & text style not translated
+- Fix [#1](https://github.com/KosmoMoustache/FixBookGUI/issues/10) Mouse clicks & text style not translated
+-
 
-## [1.0] - 2023-01-19
+## [1.0.1] - 2023-01-01
 
-### Fixed
+### Added
 
-- Fix the writing book and lectern gui
-- Change the mixin method 
+- Fix for the writing book and lectern gui
+
+### Changed
+
+- Mixin injection method

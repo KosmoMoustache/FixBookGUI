@@ -1,6 +1,6 @@
-name: Publish on Modrinth, Github & Curseforge
+name: Publish on Modrinth, Github & CurseForge
 
-on: [workflow_dispatch]
+on: [ workflow_dispatch ]
 
 permissions:
   contents: write
@@ -9,11 +9,11 @@ jobs:
   upload:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -28,10 +28,10 @@ jobs:
         run: |
           echo "MINECRAFT_VERSION="$(grep 'minecraft_version' gradle.properties | cut -f2- -d=)"" >> $GITHUB_ENV
           echo "MOD_VERSION="$(grep 'mod_version' gradle.properties | cut -f2- -d=)"" >> $GITHUB_ENV
-
+          
       - name: Install changelog parser
         uses: taiki-e/install-action@parse-changelog
-
+        
       - name: Parse changelog
         run: parse-changelog CHANGELOG.md ${{ env.MOD_VERSION }} > changes.md
 
@@ -45,12 +45,13 @@ jobs:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           github-token: ${{ secrets.P_GITHUB_TOKEN }}
-          github-tag: mc${{ env.MINECRAFT_VERSION}}-${{ env.MOD_VERSION }}
+          github-tag: v${{ env.MINECRAFT_VERSION}}-${{ env.MOD_VERSION }}
 
           game-versions: |
             ${{env.MINECRAFT_VERSION}}
+            >=1.20.4
           loaders: fabric
-          name: 'FixBookGUI v${{env.MOD_VERSION}} for ${{env.MINECRAFT_VERSION}}'
+          name: 'FixBookGui for ${{env.MINECRAFT_VERSION}}'
           version-type: release
           changelog-file: changes.md
-          files: build/libs/!(*-@(dev|source|javadoc)).jar
+          files: build/libs/!(*-@(dev|sources|javadoc)).jar
