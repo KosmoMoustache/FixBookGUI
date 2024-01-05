@@ -1,16 +1,17 @@
 package net.kosmo.fixbookgui.mixins;
 
+import net.kosmo.fixbookgui.FixBookGui;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.BookScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.PageTurnWidget;
-import net.minecraft.screen.ScreenTexts;
+import net.minecraft.client.gui.widget.Widget;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * @author mworzala (Implementation: KosmoMoustache)
@@ -24,74 +25,92 @@ public abstract class MixinBookScreen extends Screen {
         super(null);
     }
 
-    @Shadow
-    public abstract boolean mouseClicked(double mouseX, double mouseY, int button);
-
-    private int getY() {
-        return (this.height - 192) / 3 + 196;
-    }
-
-    private int getY(int y) {
-        return (this.height - 192) / 3 + y;
-    }
-
-    @ModifyArg(method = "render", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/screen/ingame/BookScreen;getTextStyleAt(DD)Lnet/minecraft/text/Style;"),
-            index = 1
+    @Inject(
+            method = "renderBackground",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/screen/Screen;renderBackground(Lnet/minecraft/client/gui/DrawContext;IIF)V",
+                    shift = At.Shift.AFTER
+            )
     )
-    public double fbg$getTextStyleAt(double y) {
-        return  y - (float) (this.height - 192) / 3;
+    public void fbg$translateBackground(@NotNull DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.getMatrices().push();
+        context.getMatrices().translate(0, FixBookGui.getFixedY(this), 0.0f);
     }
 
-    @ModifyArg(method = "mouseClicked", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/screen/ingame/BookScreen;getTextStyleAt(DD)Lnet/minecraft/text/Style;"),
-            index = 1
+    @Inject(method = "renderBackground", at = @At(value = "RETURN"))
+    public void fbg$popBackgroundMatrices(@NotNull DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.getMatrices().pop();
+    }
+
+    @Inject(
+            method = "render",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/screen/Screen;render(Lnet/minecraft/client/gui/DrawContext;IIF)V",
+                    shift = At.Shift.AFTER
+            )
     )
-    public double fbg$mouseClicked(double y) {
-        return y - (float) (this.height - 192) / 3;
+    public void fbg$translateRender(@NotNull DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.getMatrices().push();
+        context.getMatrices().translate(0, FixBookGui.getFixedY(this), 0.0f);
     }
 
-    @ModifyArg(method = "addCloseButton", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/screen/ingame/BookScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;")
+    @Inject(
+            method = "render",
+            at = @At(value = "RETURN")
     )
-    public Element fbg$addCloseButton(Element par1) {
-        return ButtonWidget.builder(ScreenTexts.DONE, button -> this.close())
-                .dimensions(this.width / 2 - 100, getY(), 200, 20).build();
+    public void fbg$popRenderMatrices(@NotNull DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.getMatrices().pop();
     }
 
-    @Redirect(method = "addPageButtons", at = @At(value = "NEW",
-            target = "(IIZLnet/minecraft/client/gui/widget/ButtonWidget$PressAction;Z)Lnet/minecraft/client/gui/widget/PageTurnWidget;")
+    @Redirect(
+            method = "addCloseButton",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/screen/ingame/BookScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;"
+            )
     )
-    public PageTurnWidget fbg$addPageButtons(int x, int y, boolean isNextPageButton, ButtonWidget.PressAction action, boolean playPageTurnSound) {
-        return new PageTurnWidget(x, getY(y), isNextPageButton, action, playPageTurnSound);
+    public <T extends Element & Drawable & Selectable> T fbg$translateCloseButton(BookScreen screen, T element) {
+        if (element instanceof Widget widget) {
+            widget.setY(widget.getY() + FixBookGui.getFixedY(this));
+        }
+        return screen.addDrawableChild(element);
     }
 
-    // drawTexture
-    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"),
-            index = 2
+    @Redirect(
+            method = "addPageButtons",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/screen/ingame/BookScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;"
+            )
     )
-    public int fbg$render1(int y) {
-        return getY(y);
+    public <T extends Element & Drawable & Selectable> T fbg$translatePageButtons(BookScreen screen, T element) {
+        if (element instanceof Widget widget) {
+            widget.setY(widget.getY() + FixBookGui.getFixedY(this));
+        }
+        return screen.addDrawableChild(element);
     }
 
-    // drawText (page index)
-    @ModifyArg(method = "render", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawText(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;IIIZ)I"),
+    @ModifyVariable(
+            method = "getTextStyleAt",
+            at = @At("HEAD"),
+            ordinal = 1,
+            argsOnly = true
+    )
+    private double fbg$fixGetTextStyleAt(double y) {
+        return y - FixBookGui.getFixedY(this);
+    }
+
+    @ModifyArg(
+            method = "render",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/DrawContext;drawHoverEvent(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Style;II)V"
+            ),
             index = 3
     )
-    public int fbg$render2(int y) {
-        return getY(y);
-    }
-
-    // drawText (page content)
-    @ModifyArg(method = "render", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawText(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/OrderedText;IIIZ)I"),
-            index = 3
-    )
-    public int fbg$render3(int y) {
-        return getY(y);
+    public int fbg$fixHoverEvent(int y) {
+        return y - FixBookGui.getFixedY(this);
     }
 }
-
-
