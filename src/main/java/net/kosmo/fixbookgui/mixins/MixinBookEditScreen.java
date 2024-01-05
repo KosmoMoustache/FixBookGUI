@@ -1,21 +1,19 @@
 package net.kosmo.fixbookgui.mixins;
 
-import net.minecraft.client.font.TextRenderer;
+import net.kosmo.fixbookgui.FixBookGui;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.BookEditScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.PageTurnWidget;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.OrderedText;
-import net.minecraft.text.StringVisitable;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.widget.Widget;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * @author KosmoMoustache
@@ -23,153 +21,64 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  */
 @Mixin(BookEditScreen.class)
 public abstract class MixinBookEditScreen extends Screen {
-    @Shadow
-    private boolean signing;
 
     protected MixinBookEditScreen() {
         super(null);
     }
 
-    @Shadow
-    private void finalizeBook(boolean sign) {
-    }
-
-    @Shadow
-    private void updateButtons() {
-    }
-
-    private int getY() {
-        return (this.height - 192) / 3 + 196;
-    }
-
-    private int getY(int y) {
-        return (this.height - 192) / 3 + y;
-    }
-
-    // Sign Button
-    @ModifyArg(method = "init", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;",
-            ordinal = 0)
+    @Inject(
+            method = "renderBackground",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/screen/Screen;renderBackground(Lnet/minecraft/client/gui/DrawContext;IIF)V",
+                    shift = At.Shift.AFTER
+            )
     )
-    public Element fbg$initSignButton(Element par1) {
-        return ButtonWidget.builder(Text.translatable("book.signButton"), button -> {
-            this.signing = true;
-            this.updateButtons();
-        }).dimensions(this.width / 2 - 100, getY(), 98, 20).build();
+    public void fbg$translateBackground(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.getMatrices().push();
+        context.getMatrices().translate(0, FixBookGui.getFixedY(this), 0.0f);
     }
 
-    // Done Button
-    @ModifyArg(method = "init", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;",
-            ordinal = 1)
+    @Inject(
+            method = "renderBackground",
+            at = @At(value = "RETURN")
     )
-    public Element fbg$initDoneButton(Element par1) {
-        return ButtonWidget.builder(ScreenTexts.DONE, button ->{
-            this.client.setScreen((Screen)null);
-            this.finalizeBook(false);
-                })
-                .dimensions(this.width / 2 + 2, getY(), 98, 20).build();
+    public void fbg$popBackgroundMatrices(@NotNull DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.getMatrices().pop();
     }
 
-    // Finalize Button (Sign)
-    @ModifyArg(method = "init", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;",
-            ordinal = 2)
+    @Inject(
+            method = "render",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/screen/Screen;render(Lnet/minecraft/client/gui/DrawContext;IIF)V",
+                    shift = At.Shift.AFTER
+            )
     )
-    public Element fbg$initFinalizeButton(Element par1) {
-        return ButtonWidget.builder(Text.translatable("book.finalizeButton"), button -> {
-            if (this.signing) {
-                this.finalizeBook(true);
-                this.client.setScreen(null);
-            }
-        }).dimensions(this.width / 2 - 100, getY(), 98, 20).build();
+    public void fbg$translateRender(@NotNull DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.getMatrices().push();
+        context.getMatrices().translate(0, FixBookGui.getFixedY(this), 0.0f);
     }
 
-    // Cancel Button
-    @ModifyArg(method = "init", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;",
-            ordinal = 3)
+    @Inject(
+            method = "render",
+            at = @At(value = "RETURN")
     )
-    public Element fbg$initCancelButton(Element par1) {
-        return ButtonWidget.builder(ScreenTexts.CANCEL, button -> {
-            if (this.signing) {
-                this.signing = false;
-            }
-            this.updateButtons();
-        }).dimensions(this.width / 2 + 2, getY(), 98, 20).build();
+    public void fbg$popRenderMatrices(@NotNull DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.getMatrices().pop();
     }
 
-    // Page buttons
-    @Redirect(method = "init", at = @At(value = "NEW",
-            target = "(IIZLnet/minecraft/client/gui/widget/ButtonWidget$PressAction;Z)Lnet/minecraft/client/gui/widget/PageTurnWidget;")
+    @Redirect(
+            method = "init",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;"
+            )
     )
-    public PageTurnWidget fbg$addPageButtons(int x, int y, boolean isNextPageButton, ButtonWidget.PressAction action, boolean playPageTurnSound) {
-        return new PageTurnWidget(x, getY(y), isNextPageButton, action, playPageTurnSound);
-    }
-
-   // drawTexture
-    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lnet/minecraft/util/Identifier;IIIIII)V"),
-            index = 2
-    )
-    public int fbg$renderDrawTexture(int y) {
-        return getY(y);
-    }
-
-
-    // Text
-    @Redirect(method = "render", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawText(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;IIIZ)I"
-    ))
-    public int fbg$renderDrawTextText(DrawContext context, TextRenderer textRenderer, Text text, int x, int y, int color, boolean shadow) {
-        return context.drawText(textRenderer, text, x, getY(y), color, shadow);
-    }
-
-    // OrderedText
-    @Redirect(method = "render", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawText(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/OrderedText;IIIZ)I"
-    ))
-    public int fbg$renderDrawTextOrderedText(DrawContext context, TextRenderer textRenderer, OrderedText orderedText, int x, int y, int color, boolean shadow) {
-        return context.drawText(textRenderer, orderedText, x, getY(y), color, shadow);
-    }
-
-    // TextWrapper
-    @Redirect(method = "render", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawTextWrapped(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/StringVisitable;IIII)V"
-    ))
-    public void fbg$renderDrawTextOWrapper(DrawContext context, TextRenderer textRenderer, StringVisitable text, int x, int y, int width, int color) {
-        context.drawTextWrapped(textRenderer, text, x, getY(y), width, color);
-    }
-
-    @Redirect(method = "drawCursor", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;fill(IIIII)V")
-    )
-    public void fbg$drawCursor1(DrawContext context, int x1, int y1, int x2, int y2, int color) {
-        context.fill(x1, getY(y1), x2, getY(y2), color);
-    }
-
-    @ModifyArg(method = "drawCursor", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;drawText(Lnet/minecraft/client/font/TextRenderer;Ljava/lang/String;IIIZ)I"),
-            index = 3
-    )
-    public int fbg$drawCursor2(int y) {
-        return getY(y);
-    }
-
-
-    @ModifyArg(method = "drawSelection", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;fill(Lnet/minecraft/client/render/RenderLayer;IIIII)V"),
-            index = 2
-    )
-    public int fbg$drawSelectionFillY(int j) {
-        return getY(j);
-    }
-
-    @ModifyArg(method = "drawSelection", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/DrawContext;fill(Lnet/minecraft/client/render/RenderLayer;IIIII)V"),
-            index = 4
-    )
-    public int fbg$drawSelectionFillHeight(int l) {
-        return getY(l);
+    public <T extends Element & Drawable & Selectable> T fbg$translateButtons(BookEditScreen screen, T element) {
+        if (element instanceof Widget widget) {
+            widget.setY(widget.getY() + FixBookGui.getFixedY(this));
+        }
+        return screen.addDrawableChild(element);
     }
 }
