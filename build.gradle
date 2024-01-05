@@ -12,6 +12,7 @@ group = project.maven_group
 
 loom {
 	mixin.defaultRefmapName.set("fixbookgui-refmap.json")
+	accessWidenerPath.set(file("src/main/resources/fixbookgui.accesswidener"))
 }
 
 dependencies {
