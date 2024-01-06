@@ -21,7 +21,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-## [1.5.0] - 2023-10-2023
+## [1.6.0] - 2024-01-06
+
+### Changed
+
+- How the gui is translated (thanks to [disktree](https://github.com/diskree)). The entire matrices is translated now instead of changing the y of each element. This should fix some incompatibility issues.
+
+
+## [1.5.0] - 2023-10-13
 
 ### Added
 
