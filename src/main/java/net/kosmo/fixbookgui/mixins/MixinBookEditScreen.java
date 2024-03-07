@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -80,5 +81,29 @@ public abstract class MixinBookEditScreen extends Screen {
             widget.setY(widget.getY() + FixBookGui.getFixedY(this));
         }
         return screen.addDrawableChild(element);
+    }
+
+    @ModifyArg(
+            method = "mouseClicked",
+            index = 0,
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;screenPositionToAbsolutePosition(Lnet/minecraft/client/gui/screen/ingame/BookEditScreen$Position;)Lnet/minecraft/client/gui/screen/ingame/BookEditScreen$Position;"
+            )
+    )
+    public BookEditScreen.Position fbg$fixMouseClickPosition(BookEditScreen.Position position) {
+        return FixBookGui.getFixedPosition(position, this);
+    }
+
+    @ModifyArg(
+            method = "mouseDragged",
+            index = 0,
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;screenPositionToAbsolutePosition(Lnet/minecraft/client/gui/screen/ingame/BookEditScreen$Position;)Lnet/minecraft/client/gui/screen/ingame/BookEditScreen$Position;"
+            )
+    )
+    public BookEditScreen.Position fbg$fixMouseDragPosition(BookEditScreen.Position position) {
+        return FixBookGui.getFixedPosition(position, this);
     }
 }

@@ -1,5 +1,5 @@
 accessWidener v2 named
-
 accessible method net/minecraft/client/gui/screen/Screen addDrawableChild (Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;
-
+accessible method net/minecraft/client/gui/screen/ingame/BookEditScreen$Position <init> (II)V
+accessible class net/minecraft/client/gui/screen/ingame/BookEditScreen$Position
 accessible field net/minecraft/client/gui/screen/ingame/BookScreen HEIGHT I
