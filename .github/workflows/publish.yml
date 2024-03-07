@@ -51,7 +51,7 @@ jobs:
             ${{env.MINECRAFT_VERSION}}
             >=1.20.4
           loaders: fabric
-          name: 'FixBookGui for ${{env.MINECRAFT_VERSION}}'
+          name: 'FixBookGui v${{env.MOD_VERSION}} for ${{env.MINECRAFT_VERSION}}'
           version-type: release
           changelog-file: changes.md
           files: build/libs/!(*-@(dev|sources|javadoc)).jar
