@@ -31,7 +31,7 @@ public abstract class MixinBookEditScreen extends Screen {
             method = "renderBackground",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screen/Screen;renderBackground(Lnet/minecraft/client/gui/DrawContext;IIF)V",
+                    target = "Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;renderInGameBackground(Lnet/minecraft/client/gui/DrawContext;)V",
                     shift = At.Shift.AFTER
             )
     )
