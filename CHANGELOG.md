@@ -21,12 +21,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [1.6.1] - 2024-03-07
+
+### Fix
+
+- Fix wrong cursor position when selecting text (https://github.com/KosmoMoustache/FixBookGUI/issues/23)
+
 ## [1.6.0] - 2024-01-06
 
 ### Changed
 
 - How the gui is translated (thanks to [disktree](https://github.com/diskree)). The entire matrices is translated now instead of changing the y of each element. This should fix some incompatibility issues.
-
 
 ## [1.5.0] - 2023-10-13
 
@@ -48,7 +53,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Fix [#1](https://github.com/KosmoMoustache/FixBookGUI/issues/10) Mouse clicks & text style not translated
--
 
 ## [1.0.1] - 2023-01-01
 
