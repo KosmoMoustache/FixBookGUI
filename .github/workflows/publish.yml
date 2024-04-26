@@ -12,10 +12,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Setup JDK 17
+      - name: Setup JDK 21
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
 
       - name: Grant execute permission to gradlew
@@ -47,9 +47,7 @@ jobs:
           github-token: ${{ secrets.P_GITHUB_TOKEN }}
           github-tag: v${{ env.MINECRAFT_VERSION}}-${{ env.MOD_VERSION }}
 
-          game-versions: |
-            ${{env.MINECRAFT_VERSION}}
-            >=1.20.4
+          game-versions: ${{env.MINECRAFT_VERSION}}
           loaders: fabric
           name: 'FixBookGui v${{env.MOD_VERSION}} for ${{env.MINECRAFT_VERSION}}'
           version-type: release
