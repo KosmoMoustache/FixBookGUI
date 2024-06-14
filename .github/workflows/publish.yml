@@ -41,6 +41,10 @@ jobs:
           github-tag: v${{ env.MINECRAFT_VERSION}}-${{ env.MOD_VERSION }}
 
           game-versions: ${{env.MINECRAFT_VERSION}}
+          dependencies: |
+            fabricloader(required) 
+            cloth-config(required)
+            fabric-api(required)
           loaders: fabric
           name: 'FixBookGui v${{env.MOD_VERSION}} for ${{env.MINECRAFT_VERSION}}'
           version-type: release
