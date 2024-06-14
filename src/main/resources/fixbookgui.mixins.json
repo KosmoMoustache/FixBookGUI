@@ -6,7 +6,7 @@
   "mixins": [
   ],
   "client": [
-    "MixinBookScreen",
+    "MixinBookViewScreen",
     "MixinBookEditScreen",
     "MixinLecternScreen"
   ],

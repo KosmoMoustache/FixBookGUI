@@ -19,9 +19,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * @see <a href="https://gist.github.com/mworzala/9a8d86803784c9c81aac77d9a7f9fb2b">Gist</a>
  */
 @Mixin(BookViewScreen.class)
-public abstract class MixinBookScreen extends Screen {
+public abstract class MixinBookViewScreen extends Screen {
 
-    protected MixinBookScreen() {
+    protected MixinBookViewScreen() {
         super(null);
     }
 
