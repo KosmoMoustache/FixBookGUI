@@ -1,13 +1,13 @@
 package net.kosmo.fixbookgui.mixins;
 
 import net.kosmo.fixbookgui.FixBookGui;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.BookEditScreen;
-import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.layouts.LayoutElement;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.BookEditScreen;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,56 +31,56 @@ public abstract class MixinBookEditScreen extends Screen {
             method = "renderBackground",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;renderInGameBackground(Lnet/minecraft/client/gui/DrawContext;)V",
+                    target = "Lnet/minecraft/client/gui/screens/inventory/BookEditScreen;renderTransparentBackground(Lnet/minecraft/client/gui/GuiGraphics;)V",
                     shift = At.Shift.AFTER
             )
     )
-    public void fbg$translateBackground(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        context.getMatrices().push();
-        context.getMatrices().translate(0, FixBookGui.getFixedY(this), 0.0f);
+    public void fbg$translateBackground(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.pose().pushPose();
+        context.pose().translate(0, FixBookGui.getFixedY(this), 0.0f);
     }
 
     @Inject(
             method = "renderBackground",
             at = @At(value = "RETURN")
     )
-    public void fbg$popBackgroundMatrices(@NotNull DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        context.getMatrices().pop();
+    public void fbg$popBackgroundMatrices(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.pose().popPose();
     }
 
     @Inject(
             method = "render",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screen/Screen;render(Lnet/minecraft/client/gui/DrawContext;IIF)V",
+                    target = "Lnet/minecraft/client/gui/screens/Screen;render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V",
                     shift = At.Shift.AFTER
             )
     )
-    public void fbg$translateRender(@NotNull DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        context.getMatrices().push();
-        context.getMatrices().translate(0, FixBookGui.getFixedY(this), 0.0f);
+    public void fbg$translateRender(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.pose().pushPose();
+        context.pose().translate(0, FixBookGui.getFixedY(this), 0.0f);
     }
 
     @Inject(
             method = "render",
             at = @At(value = "RETURN")
     )
-    public void fbg$popRenderMatrices(@NotNull DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        context.getMatrices().pop();
+    public void fbg$popRenderMatrices(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.pose().popPose();
     }
 
     @Redirect(
             method = "init",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;"
+                    target = "Lnet/minecraft/client/gui/screens/inventory/BookEditScreen;addRenderableWidget(Lnet/minecraft/client/gui/components/events/GuiEventListener;)Lnet/minecraft/client/gui/components/events/GuiEventListener;"
             )
     )
-    public <T extends Element & Drawable & Selectable> T fbg$translateButtons(BookEditScreen screen, T element) {
-        if (element instanceof Widget widget) {
+    public <T extends GuiEventListener & Renderable & NarratableEntry> T fbg$translateButtons(BookEditScreen screen, T element) {
+        if (element instanceof LayoutElement widget) {
             widget.setY(widget.getY() + FixBookGui.getFixedY(this));
         }
-        return screen.addDrawableChild(element);
+        return screen.addRenderableWidget(element);
     }
 
     @ModifyArg(
@@ -88,10 +88,10 @@ public abstract class MixinBookEditScreen extends Screen {
             index = 0,
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;screenPositionToAbsolutePosition(Lnet/minecraft/client/gui/screen/ingame/BookEditScreen$Position;)Lnet/minecraft/client/gui/screen/ingame/BookEditScreen$Position;"
+                    target = "Lnet/minecraft/client/gui/screens/inventory/BookEditScreen;convertScreenToLocal(Lnet/minecraft/client/gui/screens/inventory/BookEditScreen$Pos2i;)Lnet/minecraft/client/gui/screens/inventory/BookEditScreen$Pos2i;"
             )
     )
-    public BookEditScreen.Position fbg$fixMouseClickPosition(BookEditScreen.Position position) {
+    public BookEditScreen.Pos2i fbg$fixMouseClickPosition(BookEditScreen.Pos2i position) {
         return FixBookGui.getFixedPosition(position, this);
     }
 
@@ -100,10 +100,10 @@ public abstract class MixinBookEditScreen extends Screen {
             index = 0,
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;screenPositionToAbsolutePosition(Lnet/minecraft/client/gui/screen/ingame/BookEditScreen$Position;)Lnet/minecraft/client/gui/screen/ingame/BookEditScreen$Position;"
+                    target = "Lnet/minecraft/client/gui/screens/inventory/BookEditScreen;convertScreenToLocal(Lnet/minecraft/client/gui/screens/inventory/BookEditScreen$Pos2i;)Lnet/minecraft/client/gui/screens/inventory/BookEditScreen$Pos2i;"
             )
     )
-    public BookEditScreen.Position fbg$fixMouseDragPosition(BookEditScreen.Position position) {
+    public BookEditScreen.Pos2i fbg$fixMouseDragPosition(BookEditScreen.Pos2i position) {
         return FixBookGui.getFixedPosition(position, this);
     }
 }
