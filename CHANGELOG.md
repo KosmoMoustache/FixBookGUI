@@ -21,6 +21,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [1.6.2] - 2024-06-14
+
+### Fix 
+
+- Fix Page count in wrong position #29
+
 ## [1.6.1] - 2024-03-07
 
 ### Fix
