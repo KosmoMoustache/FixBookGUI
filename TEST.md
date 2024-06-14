@@ -13,8 +13,8 @@ pages:[
 {"text":"\\nScoreboard: "},{"score":{"name":"@p","objective":"dummy"}},
 {"text":"\\n"},
 {"text":"Créer le scoreboard","clickEvent":{"action":"run_command","value":"/scoreboard objectives add dummy minecraft.custom:minecraft.walk_one_cm"}},
-{"text":"\\nWarlk Forward: "},{"keybind":"key.forward"},{"text":"\\n\\n\\n "}',
-{"text:"INTERNET","clickEvent":{"action":"open_url","value":"https://github.com/KosmoMoustache/FixBookGUI"}},
+{"text":"\\nWarlk Forward: "},{"keybind":"key.forward"},{"text":"\\n\\n\\n"}',
+{"text":"INTERNET","clickEvent":{"action":"open_url","value":"https://github.com/KosmoMoustache/FixBookGUI"}},
 {"text":"\\n"},
 {"text":"Clipboard","clickEvent":{"action":"copy_to_clipboard","value":"lorem ipsum dolor sit amet"}},
 {"text":"\\n"},
@@ -33,6 +33,6 @@ pages:[
 {"text":"Statistique","hoverEvent":{"action":"show_achievement","contents":"stat.minecraft.custom:minecraft.walk_one_cm"}},
 {"text":"\\n"},
 {"text":"Advancement","hoverEvent":{"action":"show_achievement","contents":"achievement.minecraft:adventure/craft_decorated_pot_using_only_sherds"}},
-{"text":"\\n "}
+{"text":"\\n"}
 ],
 title:"Title",author:"KosmoMoustache"}] 1
