@@ -1,13 +1,13 @@
 package net.kosmo.fixbookgui.mixins;
 
 import net.kosmo.fixbookgui.FixBookGui;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.ingame.BookScreen;
-import net.minecraft.client.gui.widget.Widget;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.layouts.LayoutElement;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  * @reason <a href="https://bugs.mojang.com/projects/MC/issues/MC-61489">Minecraft Bug Tracker</a>
  * @see <a href="https://gist.github.com/mworzala/9a8d86803784c9c81aac77d9a7f9fb2b">Gist</a>
  */
-@Mixin(BookScreen.class)
+@Mixin(BookViewScreen.class)
 public abstract class MixinBookScreen extends Screen {
 
     protected MixinBookScreen() {
@@ -29,71 +29,71 @@ public abstract class MixinBookScreen extends Screen {
             method = "renderBackground",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screen/ingame/BookScreen;renderInGameBackground(Lnet/minecraft/client/gui/DrawContext;)V",
+                    target = "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;renderTransparentBackground(Lnet/minecraft/client/gui/GuiGraphics;)V",
                     shift = At.Shift.AFTER
             )
     )
-    public void fbg$translateBackground(@NotNull DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        context.getMatrices().push();
-        context.getMatrices().translate(0, FixBookGui.getFixedY(this), 0.0f);
+    public void fbg$translateBackground(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.pose().pushPose();
+        context.pose().translate(0, FixBookGui.getFixedY(this), 0.0f);
     }
 
     @Inject(method = "renderBackground", at = @At(value = "RETURN"))
-    public void fbg$popBackgroundMatrices(@NotNull DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        context.getMatrices().pop();
+    public void fbg$popBackgroundMatrices(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.pose().popPose();
     }
 
     @Inject(
             method = "render",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screen/Screen;render(Lnet/minecraft/client/gui/DrawContext;IIF)V",
+                    target = "Lnet/minecraft/client/gui/screens/Screen;render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V",
                     shift = At.Shift.AFTER
             )
     )
-    public void fbg$translateRender(@NotNull DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        context.getMatrices().push();
-        context.getMatrices().translate(0, FixBookGui.getFixedY(this), 0.0f);
+    public void fbg$translateRender(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.pose().pushPose();
+        context.pose().translate(0, FixBookGui.getFixedY(this), 0.0f);
     }
 
     @Inject(
             method = "render",
             at = @At(value = "RETURN")
     )
-    public void fbg$popRenderMatrices(@NotNull DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        context.getMatrices().pop();
+    public void fbg$popRenderMatrices(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        context.pose().popPose();
     }
 
     @Redirect(
-            method = "addCloseButton",
+            method = "createMenuControls",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screen/ingame/BookScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;"
+                    target = "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;addRenderableWidget(Lnet/minecraft/client/gui/components/events/GuiEventListener;)Lnet/minecraft/client/gui/components/events/GuiEventListener;"
             )
     )
-    public <T extends Element & Drawable & Selectable> T fbg$translateCloseButton(BookScreen screen, T element) {
-        if (element instanceof Widget widget) {
+    public <T extends GuiEventListener & Renderable & NarratableEntry> T fbg$translateCloseButton(BookViewScreen screen, T element) {
+        if (element instanceof LayoutElement widget) {
             widget.setY(widget.getY() + FixBookGui.getFixedY(this));
         }
-        return screen.addDrawableChild(element);
+        return screen.addRenderableWidget(element);
     }
 
     @Redirect(
-            method = "addPageButtons",
+            method = "createPageControlButtons",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screen/ingame/BookScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;"
+                    target = "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;addRenderableWidget(Lnet/minecraft/client/gui/components/events/GuiEventListener;)Lnet/minecraft/client/gui/components/events/GuiEventListener;"
             )
     )
-    public <T extends Element & Drawable & Selectable> T fbg$translatePageButtons(BookScreen screen, T element) {
-        if (element instanceof Widget widget) {
+    public <T extends GuiEventListener & Renderable & NarratableEntry> T fbg$translatePageButtons(BookViewScreen screen, T element) {
+        if (element instanceof LayoutElement widget) {
             widget.setY(widget.getY() + FixBookGui.getFixedY(this));
         }
-        return screen.addDrawableChild(element);
+        return screen.addRenderableWidget(element);
     }
 
     @ModifyVariable(
-            method = "getTextStyleAt",
+            method = "getClickedComponentStyleAt",
             at = @At("HEAD"),
             ordinal = 1,
             argsOnly = true
@@ -106,7 +106,7 @@ public abstract class MixinBookScreen extends Screen {
             method = "render",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/DrawContext;drawHoverEvent(Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Style;II)V"
+                    target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)I"
             ),
             index = 3
     )
