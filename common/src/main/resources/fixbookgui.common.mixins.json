@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "net.kosmo.fixbookgui.common.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+  ],
+  "client": [
+    "MixinBookViewScreen",
+    "MixinBookEditScreen",
+    "MixinLecternScreen"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

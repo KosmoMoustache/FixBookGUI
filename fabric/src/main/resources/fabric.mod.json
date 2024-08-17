@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "fixbookgui",
+  "version": "${version}",
+  "name": "Fix Book Gui",
+  "description": "Fix the book gui placment to be in middle center instead of top center of the screen (bug report: MC-61489)",
+  "authors": [
+    "KosmoMoustache"
+  ],
+  "contributors": [
+    "mworzala",
+    "YoungSoulluoS",
+    "diskree"
+  ],
+  "contact": {
+    "homepage": "https://bugs.mojang.com/projects/MC/issues/MC-61489",
+    "sources": "https://github.com/KosmoMoustache/FixBookGUI"  },
+  "license": "LGPL-3.0-only",
+  "icon": "assets/fixbookgui/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.kosmo.fixbookgui.fabric.FabricClient"
+    ]
+  },
+  "mixins": [
+    "fixbookgui.common.mixins.json"
+  ],
+  "depends": {
+    "minecraft": ["1.21", "1.21.1"],
+    "fabricloader": ">=0.15.11"
+  }
+}
