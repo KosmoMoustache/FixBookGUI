@@ -1,5 +1,3 @@
-TODO.md
-
 # gradle
 
 .gradle/
@@ -40,3 +38,5 @@ hs_err_*.log
 replay_*.log
 *.hprof
 *.jfr
+
+log4j.xml
