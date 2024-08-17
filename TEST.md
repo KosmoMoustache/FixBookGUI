@@ -1,38 +1,74 @@
-# Test
-/give @p minecraft:written_book[minecraft:written_book_content={
-pages:[
-{"text":"Bold","bold":true},
-{"text":"\\n","color":"reset"},
-{"text":"Italic","italic":true},
-{"text":"\\n","color":"reset"},
-{"text":"Underline","underlined":true},
-{"text":"\\n","color":"reset"},
-{"text":"Striketrougt","strikethrough":true},
-{"text":"\\n","color":"reset"},{"text":"Obsusfaced","obfuscated":true},
-{"text":"\\nSelector; ","color":"reset"},{"selector":"@p"},
-{"text":"\\nScoreboard: "},{"score":{"name":"@p","objective":"dummy"}},
-{"text":"\\n"},
-{"text":"Créer le scoreboard","clickEvent":{"action":"run_command","value":"/scoreboard objectives add dummy minecraft.custom:minecraft.walk_one_cm"}},
-{"text":"\\nWarlk Forward: "},{"keybind":"key.forward"},{"text":"\\n\\n\\n"}',
-{"text":"INTERNET","clickEvent":{"action":"open_url","value":"https://github.com/KosmoMoustache/FixBookGUI"}},
-{"text":"\\n"},
-{"text":"Clipboard","clickEvent":{"action":"copy_to_clipboard","value":"lorem ipsum dolor sit amet"}},
-{"text":"\\n"},
-{"text":"Goto 1","clickEvent":{"action":"change_page","value":1}},
-{"text":"\\n"},
-{"text":"Tooltip","hoverEvent":{"action":"show_text","contents":"tooltip"}},
-{"text":"\\n"},
-{"text":"Stone","hoverEvent":{"action":"show_item","contents":{"id":"minecraft:stone"}}},
-{"text":"\\n"},
-{"text":"Shears","hoverEvent":{"action":"show_item","contents":{"id":"minecraft:shears"}}},
-{"text":"\\n"},
-{"text":"Player","hoverEvent":{"action":"show_entity","contents":{"type":"player"}}},
-{"text":"\\n"},
-{"text":"Entity","hoverEvent":{"action":"show_entity","contents":{"type":"minecraft:creeper","name":"CustomName"}}},
-{"text":"\\n"},
-{"text":"Statistique","hoverEvent":{"action":"show_achievement","contents":"stat.minecraft.custom:minecraft.walk_one_cm"}},
-{"text":"\\n"},
-{"text":"Advancement","hoverEvent":{"action":"show_achievement","contents":"achievement.minecraft:adventure/craft_decorated_pot_using_only_sherds"}},
-{"text":"\\n"}
-],
-title:"Title",author:"KosmoMoustache"}] 1
+# Testing book
+
+1.16 -> 1.20.5
+/give @p written_book{pages:['["",{"text":"Click Event:\\n"},{"text":"Open URL","clickEvent":{"action":"open_url","value":"https://modrinth.com/mod/fixbookgui"}},{"text":"\\n"},{"text":"Copy to clipboard","clickEvent":{"action":"copy_to_clipboard","value":"Copied to clipboard"}},{"text":"\\n"},{"text":"Goto page 2","clickEvent":{"action":"change_page","value":2}},{"text":"\\n"},{"text":"Execute command","clickEvent":{"action":"run_command","value":"say Hi"}},{"text":"\\n "}]','["",{"text":"Formating:\\n"},{"text":"Bold","bold":true},{"text":"\\n","color":"reset"},{"text":"Italic","italic":true},{"text":"\\n","color":"reset"},{"text":"Underline","underlined":true},{"text":"\\n","color":"reset"},{"text":"Striktrought","strikethrough":true},{"text":"\\n","color":"reset"},{"text":"Obfusctated","obfuscated":true},{"text":"\\n","color":"reset"},{"text":"Red","color":"dark_red"},{"text":"\\n","color":"reset"},{"text":"Blue","color":"blue"},{"text":"\\n\\u14a5\\u2588\\u2606 \\u4f60\\u597d","color":"reset"}]','["",{"text":"Hover:\\n"},{"text":"Text","hoverEvent":{"action":"show_text","contents":"Raw text"}},{"text":"\\n"},{"text":"Stone","hoverEvent":{"action":"show_item","contents":{"id":"minecraft:stone"}}},{"text":"\\n"},{"text":"Creeper","hoverEvent":{"action":"show_item","contents":{"id":"minecraft:creeper"}}},{"text":"\\n"},{"text":"Advancement","hoverEvent":{"action":"show_achievement","contents":"achievement.minecraft:adventure/avoid_vibration"}},{"text":"\\n"},{"text":"Stat leave game","hoverEvent":{"action":"show_achievement","contents":"stat.minecraft.custom:minecraft.leave_game"}}]','["",{"text":"@p "},{"selector":"@p"},{"text":"\\nScore "},{"score":{"name":"@p","objective":"dummy"}},{"text":"\\nMove forward: "},{"keybind":"key.forward"},{"text":"\\n\\n\\n\\n "}]'],title:"Custom Name",author:KosmoMoustache,generation:3,display:{Lore:["Lore"]}}
+
+1.20.6+
+give @p written_book[written_book_content={pages:[
+"[\"\",
+{\"text\":\"Click Event:\\n\"},
+{\"text\":\"Open URL\",\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://modrinth.com/mod/fixbookgui\"}},
+{\"text\":\"\\n\"},
+{\"text\":\"Run command\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"say Hi\"}},
+{\"text\":\"\\n\"},
+{\"text\":\"Suggest command\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"say Hi\"}},
+{\"text\":\"\\n\"},
+{\"text\":\"Goto page 2\",\"clickEvent\":{\"action\":\"change_page\",\"value\":\"2\"}},
+{\"text\":\"\\n\"},
+{\"text\":\"Copy to clipboard\",\"clickEvent\":{\"action\":\"copy_to_clipboard\",\"value\":\"Copied to clipboard\"}},
+{\"text\":\"\\n\"}
+]",
+"[\"\",
+{\"text\":\"Formating:\\n\"},
+{\"text\":\"illageralt\",\"font\":\"illageralt\"},
+{\"text\":\"\\n\"},
+{\"text\":\"alt\",\"font\":\"alt\"},
+{\"text\":\"\\n\"},
+{\"text\":\"default\",\"font\":\"default\"},
+{\"text\":\"\\n\"},
+{\"text\":\"uniform\",\"font\":\"uniform\"},
+{\"text\":\"\\n\"},
+{\"text\":\"Bold\",\"bold\":true},
+{\"text\":\"\\n\"},
+{\"text\":\"Italic\",\"italic\":true},
+{\"text\":\"\\n\"},
+{\"text\":\"Underline\",\"underlined\":true},
+{\"text\":\"\\n\"},
+{\"text\":\"Strikethrough\",\"strikethrough\":true},
+{\"text\":\"\\n\"},
+{\"text\":\"Obfuscated\",\"obfuscated\":true},
+{\"text\":\"\\n\"},
+{\"text\":\"Red\",\"color\":\"red\"},
+{\"text\":\"\\n\"},
+{\"text\":\"Blue\",\"color\":\"blue\"},
+{\"text\":\"Special char: \\n\\u14a5\\u2588\\u2606 \\u4f60\\u597d\"}
+]",
+"[\"\",
+{\"text\":\"Hover:\\n\"},   
+{\"text\":\"Text\",\"hoverEvent\":{\"action\":\"show_text\",\"contents\":\"Raw text\"}},
+{\"text\":\"\\n\"},
+{\"text\":\"Stone\",\"hoverEvent\":{\"action\":\"show_item\",\"contents\":{\"id\":\"minecraft:stone\"}}},
+{\"text\":\"\\n\"},
+{\"text\":\"Creeper\",\"hoverEvent\":{\"action\":\"show_entity\",\"contents\":{\"name\":\"minecraft:creeper\",\"type\":\"minecraft:creeper\", \"id\":\"c47cb051-ecf5-4cc3-be30-a12b02b751da\"}}},
+{\"text\":\"\\n\"}
+]",
+"[\"\",
+{\"text\":\"translate: \"},{\"translate\":\"addServer.add\"},
+{\"text\":\"\\n\"},
+{\"text\":\"Score: \"},{\"score\":{\"name\":\"@p\",\"objective\":\"dummy\"}},
+{\"text\":\"\\n\"},
+{\"text\":\"@p:\"},{\"selector\":\"@p\"},
+{\"text\":\"\\n\"},
+{\"text\":\"keybind: \"},{\"keybind\":\"key.forward\"},
+{\"text\":\"\\n\"}
+]"
+],title:"Custom Name",author:"KosmoMoustache",generation:3}]
+
+
+Don't work anymore:
+    {\"text\":\"Run command\",\"clickEvent\":{\"action\":\"run_command\",\"value\":\"say Hi\"}},
+    {\"text\":\"Suggest command\",\"clickEvent\":{\"action\":\"suggest_command\",\"value\":\"say Hi\"}},
+
+
+
+
