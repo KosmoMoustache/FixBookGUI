@@ -30,8 +30,5 @@ ordering = "NONE"
 side = "CLIENT"
 
 [[mixins]]
-config = "fixbookgui.mixins.json"
-
-[[mixins]]
 config = "fixbookgui.common.mixins.json"
 

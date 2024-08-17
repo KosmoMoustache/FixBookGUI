@@ -21,6 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [1.7.0] - 2024-08-17
+
+### Added
+- NeoForge support
+  - item and entity hover events not showing is a NeoForge issue
+
+
 ## [1.6.2] - 2024-06-14
 
 ### Fix 
