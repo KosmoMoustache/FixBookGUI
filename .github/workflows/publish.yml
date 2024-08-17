@@ -25,7 +25,7 @@ jobs:
           path: artifacts
       - name: Set up Environment Variables
         run: |
-          echo "MINECRAFT_VERSION="$(grep 'minecraft_version' gradle.properties | cut -f2- -d=)"" >> $GITHUB_ENV
+          echo "MINECRAFT_VERSION="$(grep 'minecraftVersion' gradle.properties | cut -f2- -d=)"" >> $GITHUB_ENV
           echo "MOD_VERSION="$(grep 'version' gradle.properties | cut -f2- -d=)"" >> $GITHUB_ENV
       - name: Install changelog parser
         uses: taiki-e/install-action@parse-changelog
@@ -52,10 +52,10 @@ jobs:
       - name: (NeoForge) Publish on CurseForge & Modrinth
         uses: Kir-Antipov/mc-publish@v3.3
         with:
-          curseforge-id: 817206
+          curseforge-id: 811449
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
-          modrinth-id: A4YQgwzz
+          modrinth-id: myKgAJq6
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           game-versions: |
@@ -82,4 +82,4 @@ jobs:
           name: 'FixBookGui v${{env.MOD_VERSION}} for ${{env.MINECRAFT_VERSION}}'
           version-type: release
           changelog-file: changes.md
-          files: build/libs/!(*-@(dev|sources|javadoc)).jar
+          files: artifacts/*/build/libs/!(*-@(dev|sources|javadoc)*.jar)
