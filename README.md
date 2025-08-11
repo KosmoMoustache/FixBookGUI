@@ -11,19 +11,19 @@ to them for the fix, I just made it a mod. (They are not involved in the creatio
     <table>
         <tr>
             <td align="middle">
-            <img alt="Difference: Book" src="./img/book.jpg">
+            <img alt="Difference: Book" src=".github/assets/book.jpg">
             <figcaption align="middle">Book</figcaption>
             </td>
         </tr>
         <tr>
             <td align="middle">
-                <img alt="Difference: Writing book" src="./img/write.jpg">
+                <img alt="Difference: Writing book" src=".github/assets/write.jpg">
                 <figcaption align="middle">Writing book</figcaption>
             </td>
         </tr>
         <tr>
             <td align="middle">
-                <img alt="Difference: Lectern" src="./img/lectern.jpg">
+                <img alt="Difference: Lectern" src=".github/assets/lectern.jpg">
                 <figcaption align="middle">Lectern</figcaption>
             </td>
         </tr>

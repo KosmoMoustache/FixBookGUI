@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "${modId}",
+	"version": "${modVersion}",
+	"name": "${modName}",
+	"description": "${modDescription}",
+	"authors": [
+		"${modAuthor}"
+	],
+    "contributors": [
+      "mworzala",
+      "YoungSoulluoS",
+      "diskree"
+    ],
+	"contact": {
+		"homepage": "https://bugs.mojang.com/projects/MC/issues/MC-61489",
+		"sources": "${modGitHub}",
+		"issues": "${modGitHub}/issues",
+		"wiki": "${modGitHub}/wiki"
+	},
+	"license": "${modLicense}",
+	"icon": "icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"net.kosmo.fixbookgui.fabric.FixBookGuiFabric"
+		]
+	},
+	"mixins": [
+		"${modId}-common.mixins.json",
+		"${modId}-fabric.mixins.json"
+	],
+	"accessWidener": "${modId}.accesswidener",
+	"depends": {
+		"minecraft": "${minecraftVersion}",
+		"fabricloader": "*",
+		"fabric": "*"
+	}
+}
