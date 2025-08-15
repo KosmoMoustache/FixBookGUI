@@ -1,20 +1,18 @@
 package net.kosmo.fixbookgui.common.mixins;
 
 import net.kosmo.fixbookgui.common.FixBookGui;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Renderable;
-import net.minecraft.client.gui.components.events.GuiEventListener;
-import net.minecraft.client.gui.layouts.LayoutElement;
-import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookEditScreen;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.client.gui.screens.inventory.PageButton;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.*;
+
+//? >= 1.20.2 {
+/*import net.minecraft.client.gui.GuiGraphics;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+*/// }
 
 /**
  * @author KosmoMoustache
@@ -27,7 +25,8 @@ public abstract class MixinBookEditScreen extends Screen {
         super(null);
     }
 
-    @Inject(
+    //? >= 1.20.2 {
+    /*@Inject(
             method = "renderBackground",
             at = @At(
                     value = "INVOKE",
@@ -52,7 +51,7 @@ public abstract class MixinBookEditScreen extends Screen {
             method = "render",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/gui/screens/Screen;render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V",
+                     target = "Lnet/minecraft/client/gui/screens/Screen;render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V",
                     shift = At.Shift.AFTER
             )
     )
@@ -69,7 +68,7 @@ public abstract class MixinBookEditScreen extends Screen {
         context.pose().popPose();
     }
 
-    @Redirect(
+     @Redirect(
             method = "init",
             at = @At(
                     value = "INVOKE",
@@ -106,4 +105,112 @@ public abstract class MixinBookEditScreen extends Screen {
     public BookEditScreen.Pos2i fbg$fixMouseDragPosition(BookEditScreen.Pos2i position) {
         return FixBookGui.getFixedPosition(position, this);
     }
+    *///?} else {
+    // Buttons
+    @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 0), index = 1)
+    private int fbg$signBtn(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 1), index = 1)
+    private int fbg$doneBtn(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 2), index = 1)
+    private int fbg$finalizeBtn(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 3), index = 1)
+    private int fbg$cancelBtn(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    @Redirect(method = "init", at = @At(value = "NEW", target = "net/minecraft/client/gui/screens/inventory/PageButton"))
+    private PageButton fbg$pageButton(int x, int y, boolean isForward, Button.OnPress onPress, boolean playTurnSound) {
+        return new PageButton(x, FixBookGui.getFixedY(this) + y, isForward, onPress, playTurnSound);
+    }
+
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookEditScreen;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"),
+            index = 2)
+    public int fbg$blit(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/network/chat/Component;FFI)I",
+            ordinal = 0), index = 3)
+    public float fbg$drawEditTitleLabel(float y) {
+        return (float) FixBookGui.getFixedY(this) + y;
+    }
+
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/util/FormattedCharSequence;FFI)I",
+            ordinal = 0), index = 3)
+    public float fbg$formattedCharSequence(float y) {
+        return (float) FixBookGui.getFixedY(this) + y;
+    }
+
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/network/chat/Component;FFI)I",
+            ordinal = 1), index = 3)
+    public float fbg$ownerText(float y) {
+        return (float) FixBookGui.getFixedY(this) + y;
+    }
+
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;drawWordWrap(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/network/chat/FormattedText;IIII)V"),
+            index = 3)
+    public int fbg$render5(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/network/chat/Component;FFI)I",
+            ordinal = 2), index = 3)
+    public float fbg$pageMsg(float y) {
+        return (float) FixBookGui.getFixedY(this) + y;
+    }
+
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/network/chat/Component;FFI)I",
+            ordinal = 3), index = 3)
+    public float fbg$lineInfo(float y) {
+        return (float) FixBookGui.getFixedY(this) + y;
+    }
+
+    // Cursor
+    @ModifyArg(method = "renderCursor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiComponent;fill(Lcom/mojang/blaze3d/vertex/PoseStack;IIIII)V"),
+            index = 2)
+    public int fbg$fillCursorMinY(int y1) {
+        return FixBookGui.getFixedY(this) + y1;
+    }
+
+    @ModifyArg(method = "renderCursor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiComponent;fill(Lcom/mojang/blaze3d/vertex/PoseStack;IIIII)V"),
+            index = 4)
+    public int fbg$fillCursorMaxY(int y2) {
+        return FixBookGui.getFixedY(this) + y2;
+    }
+
+    @ModifyArg(method = "renderCursor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Ljava/lang/String;FFI)I"),
+            index = 3)
+    public float fbg$drawCursor(float y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    // Selection
+    @ModifyArg(method = "renderHighlight", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookEditScreen;fill(Lcom/mojang/blaze3d/vertex/PoseStack;IIIII)V"),
+            index = 2)
+    public int fbg$drawSelectionFillY(int y1) {
+        return FixBookGui.getFixedY(this) + y1;
+    }
+
+    @ModifyArg(method = "renderHighlight", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookEditScreen;fill(Lcom/mojang/blaze3d/vertex/PoseStack;IIIII)V"),
+            index = 4)
+    public int fbg$drawSelectionFillHeight(int y2) {
+        return FixBookGui.getFixedY(this) + y2;
+    }
+
+    // Mouse clicks/drags
+    @Redirect(method = "convertScreenToLocal", at = @At(value = "NEW", target = "net/minecraft/client/gui/screens/inventory/BookEditScreen$Pos2i"))
+    public BookEditScreen.Pos2i fbg$convertScreenToLocal(int x, int y) {
+        // TODO: Remplacer par FixBookGui.getFixedPosition
+        return new BookEditScreen.Pos2i(x, y - FixBookGui.getFixedY(this));
+    }
+    // ?}
 }
