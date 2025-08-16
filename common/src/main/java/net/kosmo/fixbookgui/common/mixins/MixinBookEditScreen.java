@@ -100,16 +100,10 @@ public abstract class MixinBookEditScreen extends Screen {
 
     // Cursor
     @ModifyArgs(method = "renderCursor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fill(IIIII)V"))
-    public void fbg$fillCursorMinY(Args args) {
+    public void fbg$renderCursorFill(Args args) {
         args.set(1, FixBookGui.getFixedY(this) + (int) args.get(1));
-        args.set(4, FixBookGui.getFixedY(this) + (int) args.get(4));
+        args.set(3, FixBookGui.getFixedY(this) + (int) args.get(3));
     }
-
-//    @ModifyArg(method = "renderCursor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fill(IIIII)V"),
-//            index = 4)
-//    public int fbg$fillCursorMaxY(int y2) {
-//        return FixBookGui.getFixedY(this) + y2;
-//    }
 
     @ModifyArg(method = "renderCursor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I"),
             index = 3)
@@ -118,36 +112,17 @@ public abstract class MixinBookEditScreen extends Screen {
     }
 
     // Selection
-    @ModifyArg(method = "renderHighlight", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V"),
-            index = 2)
-    public int fbg$drawSelectionFillY(int y1) {
-        return FixBookGui.getFixedY(this) + y1;
-    }
-
     @ModifyArgs(method = "renderHighlight", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V"))
-    public void fbg$drawSelectionFillHeight(Args args) {
+    public void fbg$drawSelectionFillY(Args args) {
         args.set(2, FixBookGui.getFixedY(this) + (int) args.get(2));
         args.set(4, FixBookGui.getFixedY(this) + (int) args.get(4));
     }
 
     // Mouse clicks/drags
-//    @Redirect(method = "convertScreenToLocal", at = @At(value = "NEW", target = "net/minecraft/client/gui/screens/inventory/BookEditScreen$Pos2i"))
-//    public BookEditScreen.Pos2i fbg$convertScreenToLocal(int x, int y) {
-//        // TODO: Remplacer par FixBookGui.getFixedPosition
-//        return new BookEditScreen.Pos2i(x, y - FixBookGui.getFixedY(this));
-//    }
-
-//    @ModifyArg(method = "init", at = @At(value = "INVOKE",
-//            target = "Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;",
-//            ordinal = 0)
-//    )
-//    public Element fbg$initSignButton(Element par1) {
-//        return ButtonWidget.builder(Text.translatable("book.signButton"), button -> {
-//            this.signing = true;
-//            this.updateButtons();
-//        }).dimensions(this.width / 2 - 100, getY(), 98, 20).build();
-//    }
-
+    @Redirect(method = "convertScreenToLocal", at = @At(value = "NEW", target = "net/minecraft/client/gui/screens/inventory/BookEditScreen$Pos2i"))
+    public BookEditScreen.Pos2i fbg$convertScreenToLocal(int x, int y) {
+        return new BookEditScreen.Pos2i(x, y - FixBookGui.getFixedY(this));
+    }
     // } elif >= 1.20.5 {
     /*@Inject(
             method = "renderBackground",
