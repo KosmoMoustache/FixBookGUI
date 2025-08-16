@@ -5,19 +5,16 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookEditScreen;
 import net.minecraft.client.gui.screens.inventory.PageButton;
+import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
-
-//? >= 1.20.2 {
-/*import net.minecraft.client.gui.GuiGraphics;
-import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-*/// }
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 /**
  * @author KosmoMoustache
  * @reason <a href="https://bugs.mojang.com/projects/MC/issues/MC-61489">Minecraft Bug Tracker</a>
  */
+@Debug(export = true)
 @Mixin(BookEditScreen.class)
 public abstract class MixinBookEditScreen extends Screen {
 
@@ -25,7 +22,133 @@ public abstract class MixinBookEditScreen extends Screen {
         super(null);
     }
 
-    //? >= 1.20.2 {
+    //? =1.20.2 {
+    // Buttons
+    // ! SAME
+    @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 0), index = 1)
+    private int fbg$signBtn(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    // ! SAME
+    @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 1), index = 1)
+    private int fbg$doneBtn(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    // ! SAME
+    @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 2), index = 1)
+    private int fbg$finalizeBtn(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    // ! SAME
+    @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 3), index = 1)
+    private int fbg$cancelBtn(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    // ! SAME
+    @Redirect(method = "init", at = @At(value = "NEW", target = "net/minecraft/client/gui/screens/inventory/PageButton"))
+    private PageButton fbg$pageButton(int x, int y, boolean isForward, Button.OnPress onPress, boolean playTurnSound) {
+        return new PageButton(x, FixBookGui.getFixedY(this) + y, isForward, onPress, playTurnSound);
+    }
+
+    // Render Background
+    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIII)V"),
+            index = 2)
+    public int fbg$blit(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    // Render
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)I",
+            ordinal = 0), index = 3)
+    public int fbg$drawEditTitleLabel(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;IIIZ)I",
+            ordinal = 0), index = 3)
+    public int fbg$formattedCharSequence(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)I",
+            ordinal = 1), index = 3)
+    public int fbg$ownerText(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawWordWrap(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/FormattedText;IIII)V"),
+            index = 3)
+    public int fbg$finalizeWarningLabel(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)I",
+            ordinal = 2), index = 3)
+    public int fbg$pageMsg(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)I",
+            ordinal = 3), index = 3)
+    public int fbg$lineInfo(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    // Cursor
+    @ModifyArgs(method = "renderCursor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fill(IIIII)V"))
+    public void fbg$fillCursorMinY(Args args) {
+        args.set(1, FixBookGui.getFixedY(this) + (int) args.get(1));
+        args.set(4, FixBookGui.getFixedY(this) + (int) args.get(4));
+    }
+
+//    @ModifyArg(method = "renderCursor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fill(IIIII)V"),
+//            index = 4)
+//    public int fbg$fillCursorMaxY(int y2) {
+//        return FixBookGui.getFixedY(this) + y2;
+//    }
+
+    @ModifyArg(method = "renderCursor", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I"),
+            index = 3)
+    public int fbg$drawCursor(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+
+    // Selection
+    @ModifyArg(method = "renderHighlight", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V"),
+            index = 2)
+    public int fbg$drawSelectionFillY(int y1) {
+        return FixBookGui.getFixedY(this) + y1;
+    }
+
+    @ModifyArgs(method = "renderHighlight", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fill(Lnet/minecraft/client/renderer/RenderType;IIIII)V"))
+    public void fbg$drawSelectionFillHeight(Args args) {
+        args.set(2, FixBookGui.getFixedY(this) + (int) args.get(2));
+        args.set(4, FixBookGui.getFixedY(this) + (int) args.get(4));
+    }
+
+    // Mouse clicks/drags
+//    @Redirect(method = "convertScreenToLocal", at = @At(value = "NEW", target = "net/minecraft/client/gui/screens/inventory/BookEditScreen$Pos2i"))
+//    public BookEditScreen.Pos2i fbg$convertScreenToLocal(int x, int y) {
+//        // TODO: Remplacer par FixBookGui.getFixedPosition
+//        return new BookEditScreen.Pos2i(x, y - FixBookGui.getFixedY(this));
+//    }
+
+//    @ModifyArg(method = "init", at = @At(value = "INVOKE",
+//            target = "Lnet/minecraft/client/gui/screen/ingame/BookEditScreen;addDrawableChild(Lnet/minecraft/client/gui/Element;)Lnet/minecraft/client/gui/Element;",
+//            ordinal = 0)
+//    )
+//    public Element fbg$initSignButton(Element par1) {
+//        return ButtonWidget.builder(Text.translatable("book.signButton"), button -> {
+//            this.signing = true;
+//            this.updateButtons();
+//        }).dimensions(this.width / 2 - 100, getY(), 98, 20).build();
+//    }
+
+    // } elif >= 1.20.5 {
     /*@Inject(
             method = "renderBackground",
             at = @At(
@@ -105,8 +228,8 @@ public abstract class MixinBookEditScreen extends Screen {
     public BookEditScreen.Pos2i fbg$fixMouseDragPosition(BookEditScreen.Pos2i position) {
         return FixBookGui.getFixedPosition(position, this);
     }
-    *///?} else {
-    // Buttons
+    *///?} elif =1.19.4  {
+    /*// Buttons
     @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 0), index = 1)
     private int fbg$signBtn(int y) {
         return FixBookGui.getFixedY(this) + y;
@@ -212,5 +335,5 @@ public abstract class MixinBookEditScreen extends Screen {
         // TODO: Remplacer par FixBookGui.getFixedPosition
         return new BookEditScreen.Pos2i(x, y - FixBookGui.getFixedY(this));
     }
-    // ?}
+    *///?}
 }
