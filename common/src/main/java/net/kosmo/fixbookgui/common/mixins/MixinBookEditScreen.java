@@ -54,6 +54,7 @@ public abstract class MixinBookEditScreen extends Screen {
         return new PageButton(x, FixBookGui.getFixedY(this) + y, isForward, onPress, playTurnSound);
     }
 
+    //? if >=1.20.2 {
     // Render Background
     @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIII)V"),
             index = 2)
@@ -203,7 +204,7 @@ public abstract class MixinBookEditScreen extends Screen {
     public BookEditScreen.Pos2i fbg$fixMouseDragPosition(BookEditScreen.Pos2i position) {
         return FixBookGui.getFixedPosition(position, this);
     }
-    *///?} elif =1.19.4  {
+    *///?} elif =1.19.4 {
     /*// Buttons
     @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 0), index = 1)
     private int fbg$signBtn(int y) {
@@ -307,7 +308,6 @@ public abstract class MixinBookEditScreen extends Screen {
     // Mouse clicks/drags
     @Redirect(method = "convertScreenToLocal", at = @At(value = "NEW", target = "net/minecraft/client/gui/screens/inventory/BookEditScreen$Pos2i"))
     public BookEditScreen.Pos2i fbg$convertScreenToLocal(int x, int y) {
-        // TODO: Remplacer par FixBookGui.getFixedPosition
         return new BookEditScreen.Pos2i(x, y - FixBookGui.getFixedY(this));
     }
     *///?}

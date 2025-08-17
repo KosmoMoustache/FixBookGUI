@@ -54,6 +54,13 @@ sourceSets.main {
 tasks {
     processResources {
         exclude("${mod.id}.accesswidener")
+
+        // Rename neoforge.mods.toml to mods.toml for 1.20.4
+        if (commonMod.propOrNull("minecraft_version") == "1.20.4") {
+            filesMatching("META-INF/neoforge.mods.toml") {
+                name = "mods.toml"
+            }
+        }
     }
 }
 

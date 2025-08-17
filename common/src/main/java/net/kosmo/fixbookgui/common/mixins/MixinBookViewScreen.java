@@ -35,7 +35,6 @@ public abstract class MixinBookViewScreen extends Screen {
         super(null);
     }
 
-    // ? = 1.20.2 {
     // ! SAME
     @ModifyArg(method = "createMenuControls", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;"), index = 1)
     public int fbg$createMenuControls(int y) {
@@ -48,6 +47,19 @@ public abstract class MixinBookViewScreen extends Screen {
         return new PageButton(x, FixBookGui.getFixedY(this) + y, isForward, onPress, playTurnSound);
     }
 
+    // ! SAME
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;getClickedComponentStyleAt(DD)Lnet/minecraft/network/chat/Style;"), index = 1)
+    public double fbg$getTextStyleAt(double y) {
+        return y - (double) FixBookGui.getFixedY(this);
+    }
+
+    // ! SAME
+    @ModifyArg(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;getClickedComponentStyleAt(DD)Lnet/minecraft/network/chat/Style;"), index = 1)
+    public double fbg$mouseClicked(double y) {
+        return y - (double) FixBookGui.getFixedY(this);
+    }
+
+    //? >= 1.20.2 {
     @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIII)V"), index = 2)
     public int fbg$renderBlit(int y) {
         return FixBookGui.getFixedY(this) + y;
@@ -62,31 +74,8 @@ public abstract class MixinBookViewScreen extends Screen {
     public int fbg$renderDrawFormattedCharSequence(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
-
-    // ! SAME
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;getClickedComponentStyleAt(DD)Lnet/minecraft/network/chat/Style;"), index = 1)
-    public double fbg$getTextStyleAt(double y) {
-        return y - (double) FixBookGui.getFixedY(this);
-    }
-
-    // ! SAME
-    @ModifyArg(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;getClickedComponentStyleAt(DD)Lnet/minecraft/network/chat/Style;"), index = 1)
-    public double fbg$mouseClicked(double y) {
-        return y - (double) FixBookGui.getFixedY(this);
-    }
-    //? } elif =1.19.4 {
-
-    /*@ModifyArg(method = "createMenuControls", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;"), index = 1)
-    public int fbg$createMenuControls(int y) {
-        return FixBookGui.getFixedY(this) + y;
-    }
-
-    @Redirect(method = "createPageControlButtons", at = @At(value = "NEW", target = "net/minecraft/client/gui/screens/inventory/PageButton"))
-    public PageButton fbg$addPageButtons(int x, int y, boolean isForward, Button.OnPress onPress, boolean playTurnSound) {
-        return new PageButton(x, FixBookGui.getFixedY(this) + y, isForward, onPress, playTurnSound);
-    }
-
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"), index = 2)
+    //?} elif =1.19.4 {
+    /*@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"), index = 2)
     public int fbg$renderBlit(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
@@ -105,11 +94,5 @@ public abstract class MixinBookViewScreen extends Screen {
     public double fbg$getTextStyleAt(double y) {
         return y - (double) FixBookGui.getFixedY(this);
     }
-
-    @ModifyArg(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;getClickedComponentStyleAt(DD)Lnet/minecraft/network/chat/Style;"), index = 1)
-    public double fbg$mouseClicked(double y) {
-        return y - (double) FixBookGui.getFixedY(this);
-    }
-    *///?} else {
-    // ?}
+    *///?}
 }
