@@ -72,7 +72,7 @@ fun moveAndDeleteFileOrFolder(
     val srcFile = buildMetaInf.resolve(src)
     val destFile = buildMetaInf.resolve(dest)
     if (srcFile.exists()) {
-        srcFile.copyTo(destFile, overwrite = true)
+        srcFile.copyRecursively(destFile, overwrite = true)
         if (delete) {
             srcFile.deleteRecursively()
         }
