@@ -54,16 +54,34 @@ sourceSets.main {
 tasks {
     processResources {
         exclude("${mod.id}.accesswidener")
-
-        // Rename neoforge.mods.toml to mods.toml for 1.20.4
-        if (commonMod.propOrNull("minecraft_version") == "1.20.4") {
-            filesMatching("META-INF/neoforge.mods.toml") {
-                name = "mods.toml"
-            }
-        }
     }
 }
 
 tasks.named("createMinecraftArtifacts") {
     dependsOn(":neoforge:${commonMod.propOrNull("minecraft_version")}:stonecutterGenerate")
+}
+
+
+tasks.named("processResources") {
+    // Rename neoforge.mods.toml to mods.toml
+    if (stonecutterBuild.eval(stonecutterBuild.current.version, "<1.20.5")) {
+        doLast {
+            moveAndDeleteFileOrFolder(
+                file("${layout.buildDirectory.get().toString()}/resources/main/META-INF"),
+                "neoforge.mods.toml",
+                "mods.toml",
+            )
+        }
+    }
+
+    // Rename function folder to functions for <1.21
+    if (stonecutterBuild.eval(stonecutterBuild.current.version, "<1.21")) {
+        doLast {
+            moveAndDeleteFileOrFolder(
+                file("${layout.buildDirectory.get().toString()}/resources/main/"),
+                "data/fixbookgui/function",
+                "data/fixbookgui/functions"
+            )
+        }
+    }
 }
