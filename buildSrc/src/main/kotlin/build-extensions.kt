@@ -38,7 +38,7 @@ value class ModData(private val project: Project) {
     val license: String get() = modProp("license")
     val github: String get() = modProp("github")
     val mcVersion: String get() = depOrNull("minecraft") ?: project.stonecutterBuild.current.version
-    val aw: String get() = getAwFileName(project.stonecutterBuild, this)
+    val aw: String get() = getAwFileName(project.stonecutterBuild)
 
     fun propOrNull(key: String) = project.prop(key)
     fun prop(key: String) = requireNotNull(propOrNull(key)) { "Missing '$key'" }
@@ -80,7 +80,7 @@ fun moveAndDeleteFileOrFolder(
     }
 }
 
-fun getAwFileName(stonecutterBuild: StonecutterBuildExtension, mod: ModData): String {
+fun getAwFileName(stonecutterBuild: StonecutterBuildExtension): String {
     return if (stonecutterBuild.eval(stonecutterBuild.current.version, "<1.21.8")) {
         "1.19.4.accesswidener"
     } else {
