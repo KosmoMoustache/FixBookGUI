@@ -30,7 +30,7 @@
 		"${modId}-common.mixins.json",
 		"${modId}-fabric.mixins.json"
 	],
-	"accessWidener": "${modId}.accesswidener",
+	"accessWidener": "${awFile}",
 	"depends": {
 		"minecraft": "${minecraftVersion}",
 		"fabricloader": "*",

@@ -1,6 +1,6 @@
 plugins {
-	id("java")
-	id("idea")
+    id("java")
+    id("idea")
     id("multiloader-common")
 }
 
@@ -13,19 +13,19 @@ val commonResources: Configuration by configurations.creating {
 
 dependencies {
     val commonPath = common.hierarchy.toString()
-	compileOnly(project(path = commonPath))
+    compileOnly(project(path = commonPath))
     commonJava(project(path = commonPath, configuration = "commonJava"))
     commonResources(project(path = commonPath, configuration = "commonResources"))
 }
 
 tasks {
-	compileJava {
-		dependsOn(commonJava)
-		source(commonJava)
-	}
+    compileJava {
+        dependsOn(commonJava)
+        source(commonJava)
+    }
 
-	processResources {
-		dependsOn(commonResources)
-		from(commonResources)
-	}
+    processResources {
+        dependsOn(commonResources)
+        from(commonResources)
+    }
 }

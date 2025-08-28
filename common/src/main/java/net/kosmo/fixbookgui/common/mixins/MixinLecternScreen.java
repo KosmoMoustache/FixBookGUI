@@ -27,7 +27,7 @@ public abstract class MixinLecternScreen extends BookViewScreen implements MenuA
     }
 
     @Redirect(method = "createMenuControls", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/LecternScreen;addRenderableWidget(Lnet/minecraft/client/gui/components/events/GuiEventListener;)Lnet/minecraft/client/gui/components/events/GuiEventListener;"))
-    public <T extends GuiEventListener & Renderable & NarratableEntry> T fbg$translateButtons(LecternScreen screen, T element) {
+    public <T extends GuiEventListener & Renderable & NarratableEntry> T fbg$createMenuControlsButtonBuilder(LecternScreen screen, T element) {
         if (element instanceof LayoutElement widget) {
             widget.setY(widget.getY() + FixBookGui.getFixedY(this));
         }

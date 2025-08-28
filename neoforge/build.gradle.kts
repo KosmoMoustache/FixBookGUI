@@ -42,7 +42,7 @@ neoForge {
     parchment {
         commonMod.depOrNull("parchment")?.let {
             mappingsVersion = it
-            minecraftVersion = commonMod.mc
+            minecraftVersion = commonMod.mcVersion
         }
     }
 }

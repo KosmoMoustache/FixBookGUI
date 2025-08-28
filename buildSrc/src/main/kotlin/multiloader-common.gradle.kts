@@ -38,6 +38,10 @@ repositories {
 
 tasks {
     processResources {
+        exclude {
+            it.name.endsWith(".accesswidener") && it.name != commonMod.aw
+        }
+
         val expandProps = mapOf(
             "javaVersion" to commonMod.propOrNull("java.version"),
             "modId" to commonMod.id,
@@ -53,6 +57,7 @@ tasks {
             "fabricLoaderVersion" to commonMod.depOrNull("fabric-loader"),
             "fabricApiVersion" to commonMod.depOrNull("fabric-api"),
             "neoForgeVersion" to commonMod.depOrNull("neoforge"),
+            "awFile" to commonMod.aw,
         ).filterValues { it?.isNotEmpty() == true }.mapValues { (_, v) -> v!! }
 
         val jsonExpandProps = expandProps.mapValues { (_, v) -> v.replace("\n", "\\\\n") }
@@ -61,7 +66,7 @@ tasks {
             expand(expandProps)
         }
 
-        filesMatching(listOf("pack.mcmeta", "fabric.mod.json", "*.mixins.json")) {
+        filesMatching(listOf("pack.mcmeta", "fabric.mod.json", "*.mixins.json", "*.mixins.json5")) {
             expand(jsonExpandProps)
         }
 

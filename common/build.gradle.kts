@@ -6,8 +6,9 @@ plugins {
     id("dev.kikugie.fletching-table.fabric") version "0.1.0-alpha.14"
 }
 
+
 loom {
-    accessWidenerPath = common.project.file("../../src/main/resources/${mod.id}.accesswidener")
+    accessWidenerPath = common.project.file("../../src/main/resources/${mod.aw}")
 
     mixin {
         useLegacyMixinAp = false
@@ -21,11 +22,11 @@ fletchingTable {
 }
 
 dependencies {
-    minecraft(group = "com.mojang", name = "minecraft", version = commonMod.mc)
+    minecraft(group = "com.mojang", name = "minecraft", version = commonMod.mcVersion)
     mappings(loom.layered {
         officialMojangMappings()
         commonMod.depOrNull("parchment")?.let { parchmentVersion ->
-            parchment("org.parchmentmc.data:parchment-${commonMod.mc}:$parchmentVersion@zip")
+            parchment("org.parchmentmc.data:parchment-${commonMod.mcVersion}:$parchmentVersion@zip")
         }
     })
 

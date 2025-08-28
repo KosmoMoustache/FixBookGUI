@@ -13,17 +13,17 @@ fletchingTable {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:${commonMod.mc}")
+    minecraft("com.mojang:minecraft:${commonMod.mcVersion}")
 //	mappings(loom.officialMojangMappings())
     mappings(loom.layered {
         officialMojangMappings()
         commonMod.depOrNull("parchment")?.let { parchmentVersion ->
-            parchment("org.parchmentmc.data:parchment-${commonMod.mc}:$parchmentVersion@zip")
+            parchment("org.parchmentmc.data:parchment-${commonMod.mcVersion}:$parchmentVersion@zip")
         }
     })
 
     modImplementation("net.fabricmc:fabric-loader:${commonMod.dep("fabric-loader")}")
-    modApi("net.fabricmc.fabric-api:fabric-api:${commonMod.dep("fabric-api")}+${commonMod.mc}")
+    modApi("net.fabricmc.fabric-api:fabric-api:${commonMod.dep("fabric-api")}+${commonMod.mcVersion}")
 
     commonMod.depOrNull("modmenu")?.let { modmenuVersion ->
         modRuntimeOnly("com.terraformersmc:modmenu:${modmenuVersion}")
@@ -31,7 +31,7 @@ dependencies {
 }
 
 loom {
-    accessWidenerPath = common.project.file("../../src/main/resources/${mod.id}.accesswidener")
+    accessWidenerPath = common.project.file("../../src/main/resources/${mod.aw}")
 
     runs {
         getByName("client") {
@@ -46,7 +46,8 @@ loom {
     }
 }
 
-tasks.named("processResources") {
+tasks.processResources {
+//tasks.named("processResources") {
     if (stonecutterBuild.eval(stonecutterBuild.current.version, "<1.21")) {
         doLast {
             moveAndDeleteFileOrFolder(
