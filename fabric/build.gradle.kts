@@ -47,7 +47,6 @@ loom {
 }
 
 tasks.processResources {
-//tasks.named("processResources") {
     if (stonecutterBuild.eval(stonecutterBuild.current.version, "<1.21")) {
         doLast {
             moveAndDeleteFileOrFolder(
