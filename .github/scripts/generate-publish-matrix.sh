@@ -4,9 +4,6 @@
 allowed_mod_loaders=$1
 allowed_versions=$2
 
-echo ${allowed_mod_loaders};
-echo ${allowed_versions};
-
 IFS=',' read -r -a allowed_mod_loaders_array <<< "${allowed_mod_loaders//[\[\]\']/}"
 IFS=',' read -r -a allowed_versions_array <<< "${allowed_versions//[\[\]\']/}"
 
