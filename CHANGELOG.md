@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- added forge support for 1.19.4 to 1.20.3
+
 ### Fixed
 
 ### Deprecated
@@ -19,9 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-## [2.0.0] - 2025-TBD
-
-#### TODO: Maybe add support for forge when neoforge is not available
+## [2.0.0] - 2025-09-19
 
 ### Added
 
