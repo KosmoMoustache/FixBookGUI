@@ -28,7 +28,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 1
 
@@ -50,8 +50,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@v5
       - name: Grant execute permission to parse-gradle-properties.sh
         run: chmod +x ./.github/scripts/parse-gradle-properties.sh
 
@@ -70,17 +69,6 @@ jobs:
 
       - name: Parse changelog
         run: parse-changelog CHANGELOG.md ${{ steps.gradle-properties.outputs.MOD_VERSION }} > RELEASE_CHANGELOG.md
-
-      - name: "Debug"
-        run: |
-          echo "Matrix: ${{ toJson(matrix) }}"
-          echo "MOD_NAME: ${{ steps.gradle-properties.outputs.MOD_NAME }}"
-          echo "MOD_ID: ${{ steps.gradle-properties.outputs.MOD_ID }}"
-          echo "MOD_VERSION: ${{ steps.gradle-properties.outputs.MOD_VERSION }}"
-          echo "MINECRAFT_VERSION: ${{ steps.gradle-properties.outputs.MINECRAFT_VERSION }}"
-          echo "MIN_MINECRAFT_VERSION: ${{ steps.gradle-properties.outputs.MIN_MINECRAFT_VERSION }}"
-          echo "Artifact path: artifacts/${{ steps.gradle-properties.outputs.MOD_NAME }}-${{ matrix.mod_loader }}-${{ matrix.version }}.jar"
-          ls -la artifacts
 
       - name: Publish ${{ matrix.mod_loader }}
         if: false
