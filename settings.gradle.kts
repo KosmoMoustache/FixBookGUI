@@ -35,9 +35,6 @@ val dists = mapOf(
 val uniqueVersions = dists.values.flatten().distinct()
 
 stonecutter {
-    kotlinController = true
-    centralScript = "build.gradle.kts"
-
     create(rootProject) {
         versions(*uniqueVersions.toTypedArray())
 
