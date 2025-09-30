@@ -3,7 +3,7 @@ plugins {
     `multiloader-loader`
     kotlin("jvm") version "2.2.0"
     id("com.google.devtools.ksp") version "2.2.0-2.0.2"
-    id("dev.kikugie.fletching-table.fabric") version "0.1.0-alpha.14"
+    id("dev.kikugie.fletching-table.fabric") version "0.1.0-alpha.20"
 }
 
 fletchingTable {
@@ -25,7 +25,7 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${commonMod.dep("fabric-loader")}")
     modApi("net.fabricmc.fabric-api:fabric-api:${commonMod.dep("fabric-api")}+${commonMod.mcVersion}")
 
-    commonMod.depOrNull("modmenu")?.let { modmenuVersion ->
+    commonMod.depOrNull("clothConfigVersion")?.let { modmenuVersion ->
         modRuntimeOnly("com.terraformersmc:modmenu:${modmenuVersion}")
     }
 }

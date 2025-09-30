@@ -3,7 +3,7 @@ plugins {
     id("net.neoforged.moddev")
     kotlin("jvm") version "2.2.0"
     id("com.google.devtools.ksp") version "2.2.0-2.0.2"
-    id("dev.kikugie.fletching-table.neoforge") version "0.1.0-alpha.14"
+    id("dev.kikugie.fletching-table.neoforge") version "0.1.0-alpha.20"
 }
 
 fletchingTable {
@@ -79,8 +79,8 @@ tasks.named("processResources") {
         doLast {
             moveAndDeleteFileOrFolder(
                 file("${layout.buildDirectory.get().toString()}/resources/main/"),
-                "data/fixbookgui/function",
-                "data/fixbookgui/functions"
+                "data/musicnotification/function",
+                "data/musicnotification/functions"
             )
         }
     }
