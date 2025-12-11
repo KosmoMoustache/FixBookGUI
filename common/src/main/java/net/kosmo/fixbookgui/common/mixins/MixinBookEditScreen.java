@@ -1,16 +1,22 @@
 package net.kosmo.fixbookgui.common.mixins;
 
 import net.kosmo.fixbookgui.common.FixBookGui;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookEditScreen;
-import net.minecraft.client.gui.screens.inventory.PageButton;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
-//? if <1.21.8 {
+//? if <=1.21.5 {
 /*import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 *///?}
+//? if <=1.21.10 {
+/*import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.inventory.PageButton;
+*///?}
+//? if >=1.21.11 {
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+//?}
+
 
 /**
  * @author KosmoMoustache
@@ -24,7 +30,8 @@ public abstract class MixinBookEditScreen extends Screen {
         super(null);
     }
 
-    // ! SAME
+    //? if <=1.21.10 {
+    /*// ! SAME
     @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;",
             ordinal = 0), index = 1)
     private int fbg$InitSignBtn(int y) {
@@ -39,7 +46,7 @@ public abstract class MixinBookEditScreen extends Screen {
     }
 
     //? if <=1.21.5 {
-    /*// ! SAME
+    /^// ! SAME
     @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;",
             ordinal = 2), index = 1)
     private int fbg$InitFinalizeBtn(int y) {
@@ -52,7 +59,7 @@ public abstract class MixinBookEditScreen extends Screen {
     private int fbg$InitCancelBtn(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
-    *///?}
+    ^///?}
 
     // ! SAME
     @Redirect(method = "init", at = @At(value = "NEW", target = "net/minecraft/client/gui/screens/inventory/PageButton"))
@@ -67,8 +74,7 @@ public abstract class MixinBookEditScreen extends Screen {
         return FixBookGui.getFixedY(this) + y;
     }
 
-    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"),
-            index = 3)
+    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIII)V"), index = 3)
     public int fbg$blit(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
@@ -81,11 +87,11 @@ public abstract class MixinBookEditScreen extends Screen {
 
     //?} elif >=1.20.2 {
 
-    /*//? if >=1.21.2 {
-    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"), index = 3)
+    /^//? if >=1.21.2 {
+    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/Identifier;IIFFIIII)V"), index = 3)
             //?} else {
-    /^@ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIII)V"), index = 2)
-     ^///?}
+    /^¹@ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/Identifier;IIIIII)V"), index = 2)
+     ¹^///?}
     public int fbg$renderBackgroundBlit(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
@@ -111,8 +117,8 @@ public abstract class MixinBookEditScreen extends Screen {
     //? if >=1.21.4 {
     @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawWordWrap(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/FormattedText;IIIIZ)V"), index = 3)
      //?} else {
-    /^@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawWordWrap(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/FormattedText;IIII)V"), index = 3)
-            ^///?}
+    /^¹@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawWordWrap(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/FormattedText;IIII)V"), index = 3)
+            ¹^///?}
     public int fbg$renderDrawWordWrapFinalizeWarningLabel(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
@@ -151,8 +157,8 @@ public abstract class MixinBookEditScreen extends Screen {
     public BookEditScreen.Pos2i fbg$convertScreenToLocal(int x, int y) {
         return new BookEditScreen.Pos2i(x, y - FixBookGui.getFixedY(this));
     }
-    *///?} elif =1.19.4 {
-    /*@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookEditScreen;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"),
+    ^///?} elif =1.19.4 {
+    /^@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookEditScreen;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"),
             index = 2)
     public int fbg$renderBlit(int y) {
         return FixBookGui.getFixedY(this) + y;
@@ -216,5 +222,15 @@ public abstract class MixinBookEditScreen extends Screen {
     public BookEditScreen.Pos2i fbg$convertScreenToLocal(int x, int y) {
         return new BookEditScreen.Pos2i(x, y - FixBookGui.getFixedY(this));
     }
-    *///?}
+    ^///?}
+    *///?} else {
+    @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/MultiLineEditBox$Builder;setY(I)Lnet/minecraft/client/gui/components/MultiLineEditBox$Builder;"))
+    public int fbg$initSetY(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+    @ModifyReturnValue(method = "backgroundTop", at = @At("RETURN"))
+    public int fbg$backgroundTop(int original) {
+        return FixBookGui.getFixedY(this) + original;
+    }
+    //?}
 }

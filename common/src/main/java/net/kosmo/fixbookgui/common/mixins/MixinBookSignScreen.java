@@ -59,7 +59,7 @@ public abstract class MixinBookSignScreen extends Screen {
         return FixBookGui.getFixedY(this) + y;
     }
 
-    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"),
+    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIII)V"),
             index = 3)
     private int fbg$renderBackgroundBlit(int y) {
         return FixBookGui.getFixedY(this) + y;

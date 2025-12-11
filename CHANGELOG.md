@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- added forge support for 1.19.4 to 1.20.3
+- TODO: add forge support for 1.19.4 to 1.20.3
 
 ### Fixed
 
@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Support for Minecraft from version 1.19.4 to 1.21.8 with Fabric and from 1.20.4 to 1.21.8 with NeoForge
+- Support for Minecraft from version 1.19.4 to 1.21.11 with Fabric and from 1.20.4 to 1.21.11 with NeoForge
 
 ## [1.6.2] - 2024-06-14
 
