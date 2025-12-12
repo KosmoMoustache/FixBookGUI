@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- TODO: add forge support for 1.19.4 to 1.20.3
+
 ### Fixed
 
 ### Deprecated
@@ -17,13 +19,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-### Fixed
-
 ### Security
+
+## [2.0.0] - 2025-09-19
+
+### Added
+
+- Support for Minecraft from version 1.19.4 to 1.21.11 with Fabric and from 1.20.4 to 1.21.11 with NeoForge
 
 ## [1.6.2] - 2024-06-14
 
-### Fix 
+### Fix
 
 - Fix Page count in wrong position #29
 
@@ -37,7 +43,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- How the gui is translated (thanks to [disktree](https://github.com/diskree)). The entire matrices is translated now instead of changing the y of each element. This should fix some incompatibility issues.
+- How the gui is translated (thanks to [disktree](https://github.com/diskree)). The entire matrices is translated now
+  instead of changing the y of each element. This should fix some incompatibility issues.
 
 ## [1.5.0] - 2023-10-13
 

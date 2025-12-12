@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.kosmo.fixbookgui.common.mixins",
+  "refmap": "${modId}.refmap.json",
+  "compatibilityLevel": "JAVA_${javaVersion}",
+  "mixins": [
+  ],
+  "client": [
+    "MixinBookEditScreen",
+    //? if >=1.21.8 {
+    "MixinBookSignScreen",
+    //?}
+     "MixinBookViewScreen",
+    "MixinLecternScreen"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
