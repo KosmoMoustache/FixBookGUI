@@ -11,7 +11,9 @@
     "MixinBookSignScreen",
     //?}
      "MixinBookViewScreen",
-    "MixinLecternScreen"
+    //? if <1.21.11 {
+    /*"MixinLecternScreen"
+    *///? }
   ],
   "injectors": {
     "defaultRequire": 1
