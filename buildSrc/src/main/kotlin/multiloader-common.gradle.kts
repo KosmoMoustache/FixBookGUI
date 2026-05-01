@@ -1,79 +1,55 @@
+
 plugins {
     id("java")
     id("idea")
     id("java-library")
 }
 
-version = "${loader}-${commonMod.version}+mc${stonecutterBuild.current.version}"
+version = "${loader}-${mod.version}+mc${stonecutterBuild.current.version}"
 
 base {
-    archivesName = commonMod.id
+    archivesName = mod.id
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(commonProject.prop("java.version")!!)
-    // withSourcesJar()
-    // withJavadocJar()
+    toolchain.vendor = JvmVendorSpec.JETBRAINS
+    toolchain.languageVersion = JavaLanguageVersion.of(lproject.prop("java.version")!!)
+//	sourceCompatibility = JavaVersion.VERSION_25
+//	targetCompatibility = JavaVersion.VERSION_25
+//	withSourcesJar()
+//	withJavadocJar()
 }
 
 repositories {
     mavenCentral()
-    exclusiveContent {
-        forRepository {
-            maven("https://repo.spongepowered.org/repository/maven-public") { name = "Sponge" }
-        }
-        filter { includeGroupAndSubgroups("org.spongepowered") }
-    }
-    exclusiveContent {
-        forRepositories(
-            maven("https://maven.parchmentmc.org") { name = "ParchmentMC" },
-            maven("https://maven.neoforged.net/releases") { name = "NeoForge" },
-        )
-        filter { includeGroup("org.parchmentmc.data") }
-    }
-    maven("https://maven.terraformersmc.com/releases/") { name = "TerraformersMC" }
+    strictMaven("https://repo.spongepowered.org/repository/maven-public", "org.spongepowered")
+    strictMaven("https://maven.parchmentmc.org", "org.parchmentmc.data")
+    strictMaven("https://maven.terraformersmc.com/releases/", "com.terraformersmc")
+    strictMaven("https://maven.shedaniel.me/", "me.shedaniel")
+
     maven("https://maven.nucleoid.xyz") { name = "pb4.eu" }
     maven("https://maven.quiltmc.org/repository/release")
 }
 
-tasks {
-    processResources {
-        exclude {
-            it.name.endsWith(".accesswidener") && it.name != commonMod.aw
-        }
-
-        val expandProps = mapOf(
-            "javaVersion" to commonMod.propOrNull("java.version"),
-            "modId" to commonMod.id,
-            "modName" to commonMod.name,
-            "modVersion" to commonMod.version,
-            "modGroup" to commonMod.group,
-            "modAuthor" to commonMod.author,
-            "modDescription" to commonMod.description,
-            "modLicense" to commonMod.license,
-            "modGitHub" to commonMod.github,
-            "minecraftVersion" to commonMod.propOrNull("minecraft_version"),
-            "minMinecraftVersion" to commonMod.propOrNull("min_minecraft_version"),
-            "fabricLoaderVersion" to commonMod.depOrNull("fabric-loader"),
-            "fabricApiVersion" to commonMod.depOrNull("fabric-api"),
-            "neoForgeVersion" to commonMod.depOrNull("neoforge"),
-            "awFile" to commonMod.aw,
-        ).filterValues { it?.isNotEmpty() == true }.mapValues { (_, v) -> v!! }
-
-        val jsonExpandProps = expandProps.mapValues { (_, v) -> v.replace("\n", "\\\\n") }
-
-        filesMatching(listOf("META-INF/mods.toml", "META-INF/neoforge.mods.toml")) {
-            expand(expandProps)
-        }
-
-        filesMatching(listOf("pack.mcmeta", "fabric.mod.json", "*.mixins.json", "*.mixins.json5")) {
-            expand(jsonExpandProps)
-        }
-
-        inputs.properties(expandProps)
+tasks.named<ProcessResources>("processResources") {
+    val props = HashMap<String, String>().apply {
+        this["java_version"] = lproject.prop("java.version")!!
+        this["mod_id"] = mod.id
+        this["mod_name"] = mod.name
+        this["mod_version"] = mod.version
+        this["mod_description"] = mod.description
+        this["mod_license"] = mod.license
+        this["mod_github"] = mod.github
+        this["aw_version"] = mod.aw_version
+        this["fabric_mc_range"] = mod.fabric_mc_range
+        this["neoforge_mc_range"] = mod.neoforge_mc_range
+        this["floader"] = deps.floader
+        this["fapi"] = deps.fapi
+        this["neoforge"] = deps.neoforge
     }
-}
 
-tasks.named("processResources") {
-    dependsOn(":common:${commonMod.propOrNull("minecraft_version")}:stonecutterGenerate")
+    filesMatching(listOf("pack.mcmeta", "fabric.mod.json", "*.mixins.json", "*.mixins.json5", "META-INF/mods.toml", "META-INF/neoforge.mods.toml")) {
+        expand(props)
+    }
+    dependsOn(":common:${deps.minecraft}:stonecutterGenerate")
 }

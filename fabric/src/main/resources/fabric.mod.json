@@ -1,11 +1,11 @@
 {
 	"schemaVersion": 1,
-	"id": "${modId}",
-	"version": "${modVersion}",
-	"name": "${modName}",
-	"description": "${modDescription}",
+	"id": "${mod_id}",
+	"version": "${mod_version}",
+	"name": "${mod_name}",
+	"description": "${mod_description}",
 	"authors": [
-		"${modAuthor}"
+		"KosmoMoustache"
 	],
     "contributors": [
       "mworzala",
@@ -14,11 +14,11 @@
     ],
 	"contact": {
 		"homepage": "https://bugs.mojang.com/projects/MC/issues/MC-61489",
-		"sources": "${modGitHub}",
-		"issues": "${modGitHub}/issues",
-		"wiki": "${modGitHub}/wiki"
+		"sources": "${mod_github}",
+		"issues": "${mod_github}/issues",
+		"wiki": "${mod_github}/wiki"
 	},
-	"license": "${modLicense}",
+	"license": "${mod_license}",
 	"icon": "icon.png",
 	"environment": "client",
 	"entrypoints": {
@@ -27,13 +27,12 @@
 		]
 	},
 	"mixins": [
-		"${modId}-common.mixins.json",
-		"${modId}-fabric.mixins.json"
+		"${mod_id}-common.mixins.json",
+		"${mod_id}-fabric.mixins.json"
 	],
-	"accessWidener": "${awFile}",
+	"accessWidener": "${aw_version}.aw",
 	"depends": {
-		"minecraft": "${minecraftVersion}",
-		"fabricloader": "*",
-		"fabric": "*"
+      "minecraft": "${fabric_mc_range}",
+      "fabricloader": ">=${floader}"
 	}
 }

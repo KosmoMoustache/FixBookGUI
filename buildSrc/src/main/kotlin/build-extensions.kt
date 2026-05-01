@@ -1,51 +1,55 @@
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
-import dev.kikugie.stonecutter.controller.StonecutterControllerExtension
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.maven
 import java.io.File
 
-val Project.mod: ModData get() = ModData(this)
 fun Project.prop(key: String): String? = findProperty(key)?.toString()
-fun String.upperCaseFirst() = replaceFirstChar { if (it.isLowerCase()) it.uppercaseChar() else it }
+val Project.stonecutterBuild get() = extensions.getByType<StonecutterBuildExtension>()
+
+val Project._mod: ModData get() = ModData(this)
+val Project._deps: DepsData get() = DepsData(this)
+
+val Project.common get() = requireNotNull(stonecutterBuild.node.sibling("common"))
+val Project.lproject get() = rootProject.project(stonecutterBuild.current.project)
+val Project.loader: String? get() = prop("loader")
+
+val Project.mod get() = lproject._mod
+val Project.deps get() = lproject._deps
 
 fun RepositoryHandler.strictMaven(url: String, alias: String, vararg groups: String) = exclusiveContent {
     forRepository { maven(url) { name = alias } }
     filter { groups.forEach(::includeGroup) }
 }
 
-val Project.stonecutterBuild get() = extensions.getByType<StonecutterBuildExtension>()
-val Project.stonecutterController get() = extensions.getByType<StonecutterControllerExtension>()
-
-val Project.common
-    get() = requireNotNull(stonecutterBuild.node.sibling("common")) {
-        "No common project for $project"
-    }
-val Project.commonProject get() = rootProject.project(stonecutterBuild.current.project)
-val Project.commonMod get() = commonProject.mod
-
-val Project.loader: String? get() = prop("loader")
-
 @JvmInline
 value class ModData(private val project: Project) {
     val id: String get() = modProp("id")
-    val name: String get() = modProp("name")
     val version: String get() = modProp("version")
+    val name: String get() = modProp("name")
     val group: String get() = modProp("group")
-    val author: String get() = modProp("author")
     val description: String get() = modProp("description")
     val license: String get() = modProp("license")
     val github: String get() = modProp("github")
-    val mcVersion: String get() = depOrNull("minecraft") ?: project.stonecutterBuild.current.version
-    val aw: String get() = getAwFileName(project.stonecutterBuild)
+    val aw_version: String get() = modProp("aw")
+    val fabric_mc_range: String get() = modProp("fabric_range")
+    val neoforge_mc_range: String get() = modProp("neoforge_range")
 
-    fun propOrNull(key: String) = project.prop(key)
-    fun prop(key: String) = requireNotNull(propOrNull(key)) { "Missing '$key'" }
-    fun modPropOrNull(key: String) = project.prop("mod.$key")
+    fun modPropOrNull(key: String) = project.prop("mod.$key")?.takeIf { it.isNotEmpty() && it != ""}
     fun modProp(key: String) = requireNotNull(modPropOrNull(key)) { "Missing 'mod.$key'" }
-    fun depOrNull(key: String): String? = project.prop("deps.$key")?.takeIf { it.isNotEmpty() && it != "" }
-    fun dep(key: String) = requireNotNull(depOrNull(key)) { "Missing 'deps.$key'" }
+}
+
+@JvmInline
+value class DepsData(private val project: Project) {
+    val minecraft: String get() = get("minecraft")
+    val parchment: String? get() = getOrNull("parchment")
+    val floader: String get() = get("fabric-loader")
+    val fapi: String get() = get("fabric-api")
+    val neoforge: String get() = get("neoforge")
+
+    fun getOrNull(key: String): String? = project.prop("deps.$key")?.takeIf { it.isNotEmpty() && it != ""}
+    fun get(key: String) = requireNotNull(getOrNull(key)) { "Missing 'deps.$key'" }
 }
 
 /**
@@ -72,18 +76,11 @@ fun moveAndDeleteFileOrFolder(
 ) {
     val srcFile = buildMetaInf.resolve(src)
     val destFile = buildMetaInf.resolve(dest)
-    if (srcFile.exists()) {
-        srcFile.copyRecursively(destFile, overwrite = true)
-        if (delete) {
-            srcFile.deleteRecursively()
-        }
-    }
-}
-
-fun getAwFileName(stonecutterBuild: StonecutterBuildExtension): String {
-    return if (stonecutterBuild.eval(stonecutterBuild.current.version, "<1.21.8")) {
-        "1.19.4.accesswidener"
-    } else {
-        "1.21.8.accesswidener"
+    if (srcFile.exists() && !destFile.exists()) {
+        srcFile.renameTo(destFile)
+//        srcFile.copyRecursively(destFile, overwrite = true)
+//        if (delete) {
+//            srcFile.deleteRecursively()
+//        }
     }
 }
