@@ -1,18 +1,19 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     id("multiloader-common")
     id("fabric-loom")
-    kotlin("jvm") version "2.2.0"
-    id("com.google.devtools.ksp") version "2.2.0-2.0.2"
-    id("dev.kikugie.fletching-table.fabric") version "0.1.0-alpha.14"
+//    id("dev.kikugie.loom-back-compat")
+    id("dev.kikugie.fletching-table.fabric") version "0.1.0-alpha.22"
 }
 
-
 loom {
-    accessWidenerPath = common.project.file("../../src/main/resources/${mod.aw}")
+    accessWidenerPath =
+        common.project.file("../../src/main/resources/${mod.aw_version}.aw")
+}
 
-    mixin {
-        useLegacyMixinAp = false
-    }
+stonecutter {
+    filters.exclude("**/*.aw")
 }
 
 fletchingTable {
@@ -22,22 +23,25 @@ fletchingTable {
 }
 
 dependencies {
-    minecraft(group = "com.mojang", name = "minecraft", version = commonMod.mcVersion)
-    mappings(loom.layered {
-        officialMojangMappings()
-        commonMod.depOrNull("parchment")?.let { parchmentVersion ->
-            parchment("org.parchmentmc.data:parchment-${commonMod.mcVersion}:$parchmentVersion@zip")
-        }
-    })
+    minecraft("com.mojang:minecraft:${deps.minecraft}")
+
+    if (stonecutter.eval(deps.minecraft, "<=26.0")) {
+        mappings(loom.layered {
+            officialMojangMappings()
+            deps.parchment?.let { version ->
+                parchment("org.parchmentmc.data:parchment-${deps.minecraft}:$version@zip")
+            }
+        })
+    }
 
     compileOnly("org.spongepowered:mixin:0.8.5")
 
-    "io.github.llamalad7:mixinextras-common:0.3.5".let {
+    "io.github.llamalad7:mixinextras-common:0.5.4".let {
         compileOnly(it)
         annotationProcessor(it)
     }
 
-    modCompileOnly("net.fabricmc:fabric-loader:${commonMod.dep("fabric-loader")}")
+    compileOnly("net.fabricmc:fabric-loader:${deps.floader}")
 }
 
 val commonJava: Configuration by configurations.creating {

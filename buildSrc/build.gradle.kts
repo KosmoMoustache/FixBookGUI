@@ -1,17 +1,13 @@
 plugins {
-	`kotlin-dsl`
-	kotlin("jvm") version "2.2.0"
-    id("project-report")
+    `kotlin-dsl`
 }
 
 repositories {
-	mavenCentral()
-	gradlePluginPortal()
-	maven("https://maven.kikugie.dev/snapshots")
+    mavenCentral()
+    gradlePluginPortal()
 }
 
 dependencies {
-	fun plugin(id: String, version: String) = "$id:$id.gradle.plugin:$version"
-
-	implementation("dev.kikugie:stonecutter:0.7.11")
+    implementation("dev.kikugie:stonecutter:0.9.2")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:2.3.20")
 }

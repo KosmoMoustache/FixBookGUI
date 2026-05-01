@@ -1,9 +1,16 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
+    kotlin("jvm")
+    id("multiloader-loader")
     id("fabric-loom")
-    `multiloader-loader`
-    kotlin("jvm") version "2.2.0"
-    id("com.google.devtools.ksp") version "2.2.0-2.0.2"
-    id("dev.kikugie.fletching-table.fabric") version "0.1.0-alpha.20"
+//    id("dev.kikugie.loom-back-compat")
+    id("dev.kikugie.fletching-table.fabric") version "0.1.0-alpha.22"
+}
+
+// TODO: Useless ??
+kotlin {
+    jvmToolchain(lproject.prop("java.version")!!.toInt())
 }
 
 fletchingTable {
@@ -12,41 +19,53 @@ fletchingTable {
     }
 }
 
+
 dependencies {
-    minecraft("com.mojang:minecraft:${commonMod.mcVersion}")
-//	mappings(loom.officialMojangMappings())
-    mappings(loom.layered {
-        officialMojangMappings()
-        commonMod.depOrNull("parchment")?.let { parchmentVersion ->
-            parchment("org.parchmentmc.data:parchment-${commonMod.mcVersion}:$parchmentVersion@zip")
-        }
-    })
+    fun fabricModules(vararg modules: String) = modules.forEach {
+        modImplementation(fabricApi.module("fabric-$it", "${deps.fapi}+${deps.minecraft}"))
+    }
 
-    modImplementation("net.fabricmc:fabric-loader:${commonMod.dep("fabric-loader")}")
-    modApi("net.fabricmc.fabric-api:fabric-api:${commonMod.dep("fabric-api")}+${commonMod.mcVersion}")
+    minecraft("com.mojang:minecraft:${deps.minecraft}")
 
-    commonMod.depOrNull("clothConfigVersion")?.let { modmenuVersion ->
-        modRuntimeOnly("com.terraformersmc:modmenu:${modmenuVersion}")
+    if (stonecutter.eval(deps.minecraft, "<=1.21.11")) {
+        mappings(loom.layered {
+            officialMojangMappings()
+            deps.parchment?.let { version ->
+                parchment("org.parchmentmc.data:parchment-${deps.minecraft}:$version@zip")
+            }
+        })
+    }
+
+    modImplementation("net.fabricmc:fabric-loader:${deps.floader}")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${deps.fapi}+${deps.minecraft}")
+}
+
+//Mixin hotswap
+afterEvaluate {
+    loom.runs.configureEach {
+        // https://fabricmc.net/wiki/tutorial:mixin_hotswaps
+        vmArg("-javaagent:${configurations.compileClasspath.get().find { it.name.contains("sponge-mixin") }}")
     }
 }
 
 loom {
-    accessWidenerPath = common.project.file("../../src/main/resources/${mod.aw}")
+    accessWidenerPath = common.project.file("../../src/main/resources/${mod.aw_version}.aw")
 
     runs {
         getByName("client") {
             client()
             configName = "Fabric Client"
             ideConfigGenerated(true)
+            programArgs("--quickPlaySingleplayer", "wd_void", "--width", "1280", "--height", "720")
+            if (sc.current.parsed > "1.21.1") {
+                vmArgs("-XX:+AllowEnhancedClassRedefinition")
+            }
+            // "-Dfabric.log.level=debug"
         }
-    }
-
-    mixin {
-        defaultRefmapName = "${mod.id}.refmap.json"
     }
 }
 
-tasks.processResources {
+tasks.named<ProcessResources>("processResources") {
     if (stonecutterBuild.eval(stonecutterBuild.current.version, "<1.21")) {
         doLast {
             moveAndDeleteFileOrFolder(

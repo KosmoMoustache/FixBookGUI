@@ -1,9 +1,10 @@
+import net.neoforged.nfrtgradle.CreateMinecraftArtifacts
+
 plugins {
-    `multiloader-loader`
+    kotlin("jvm")
+    id("multiloader-loader")
     id("net.neoforged.moddev")
-    kotlin("jvm") version "2.2.0"
-    id("com.google.devtools.ksp") version "2.2.0-2.0.2"
-    id("dev.kikugie.fletching-table.neoforge") version "0.1.0-alpha.20"
+    id("dev.kikugie.fletching-table.neoforge") version "0.1.0-alpha.22"
 }
 
 fletchingTable {
@@ -12,37 +13,34 @@ fletchingTable {
     }
 }
 
-neoForge {
-    enable {
-        version = commonMod.dep("neoforge")
-    }
-}
-
 dependencies {
-    // Required dependencies
-//	implementation("group:${commonMod.dep("key")}")
 }
 
 neoForge {
+    version = deps.neoforge
+
     accessTransformers.from(project.file("../../src/main/resources/META-INF/accesstransformer.cfg").absolutePath)
 
     runs {
         register("client") {
             client()
             ideName = "NeoForge Client (${project.path})"
+            programArgument("--quickPlaySingleplayer wd_void")
+            programArgument("--width 1280")
+            programArgument("--height 720")
         }
     }
 
     mods {
-        register(commonMod.id) {
+        register(mod.id) {
             sourceSet(sourceSets.main.get())
         }
     }
 
-    parchment {
-        commonMod.depOrNull("parchment")?.let {
+    deps.parchment?.let {
+        parchment {
             mappingsVersion = it
-            minecraftVersion = commonMod.mcVersion
+            minecraftVersion = deps.minecraft
         }
     }
 }
@@ -52,36 +50,33 @@ sourceSets.main {
 }
 
 tasks {
-    processResources {
-        exclude("${mod.id}.accesswidener")
-    }
-}
+    named<ProcessResources>("processResources") {
+        exclude("**/*.aw")
 
-tasks.named("createMinecraftArtifacts") {
-    dependsOn(":neoforge:${commonMod.propOrNull("minecraft_version")}:stonecutterGenerate")
-}
+        // Rename neoforge.mods.toml to mods.toml
+        if (stonecutterBuild.eval(stonecutterBuild.current.version, "<1.20.5")) {
+            doLast {
+                moveAndDeleteFileOrFolder(
+                    file("${layout.buildDirectory.get().toString()}/resources/main/META-INF"),
+                    "neoforge.mods.toml",
+                    "mods.toml",
+                )
+            }
+        }
 
-
-tasks.named("processResources") {
-    // Rename neoforge.mods.toml to mods.toml
-    if (stonecutterBuild.eval(stonecutterBuild.current.version, "<1.20.5")) {
-        doLast {
-            moveAndDeleteFileOrFolder(
-                file("${layout.buildDirectory.get().toString()}/resources/main/META-INF"),
-                "neoforge.mods.toml",
-                "mods.toml",
-            )
+        // Rename function folder to functions for <1.21
+        if (stonecutterBuild.eval(stonecutterBuild.current.version, "<1.21")) {
+            doLast {
+                moveAndDeleteFileOrFolder(
+                    file("${layout.buildDirectory.get().toString()}/resources/main/"),
+                    "data/musicnotification/function",
+                    "data/musicnotification/functions"
+                )
+            }
         }
     }
 
-    // Rename function folder to functions for <1.21
-    if (stonecutterBuild.eval(stonecutterBuild.current.version, "<1.21")) {
-        doLast {
-            moveAndDeleteFileOrFolder(
-                file("${layout.buildDirectory.get().toString()}/resources/main/"),
-                "data/musicnotification/function",
-                "data/musicnotification/functions"
-            )
-        }
+    named<CreateMinecraftArtifacts>("createMinecraftArtifacts") {
+        dependsOn(":neoforge:${deps.minecraft}:stonecutterGenerate")
     }
 }
