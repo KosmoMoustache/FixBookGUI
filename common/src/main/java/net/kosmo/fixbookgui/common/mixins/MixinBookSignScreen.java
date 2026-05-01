@@ -42,24 +42,33 @@ public abstract class MixinBookSignScreen extends Screen {
         return FixBookGui.getFixedY(this) + y;
     }
 
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)V",
+    //~ if >26 'render' -> 'extractRenderState'
+    //~ if >26 'GuiGraphics;drawString' -> 'GuiGraphicsExtractor;text'
+    @ModifyArg(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)V",
             ordinal = 0), index = 3)
     private int fbg$renderDrawStringEditTitleLabel(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
 
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)V",
+    //~ if >26 'render' -> 'extractRenderState'
+    //~ if >26 'GuiGraphics;drawString' -> 'GuiGraphicsExtractor;text'
+    @ModifyArg(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;text(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)V",
             ordinal = 1), index = 3)
     private int fbg$renderDrawStringOwnerText(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawWordWrap(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/FormattedText;IIIIZ)V"),
+
+    //~ if >26 'render' -> 'extractRenderState'
+    //~ if >26 'GuiGraphics;drawWordWrap' -> 'GuiGraphicsExtractor;textWithWordWrap'
+    @ModifyArg(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;textWithWordWrap(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/FormattedText;IIIIZ)V"),
             index = 3)
     private int fbg$renderDrawWordWrapFinalizeWarningLabel(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
 
-    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIII)V"),
+    //~ if >26 'renderBackground' -> 'extractBackground'
+    //~ if >26 'GuiGraphics;blit' -> 'GuiGraphicsExtractor;blit'
+    @ModifyArg(method = "extractBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIII)V"),
             index = 3)
     private int fbg$renderBackgroundBlit(int y) {
         return FixBookGui.getFixedY(this) + y;

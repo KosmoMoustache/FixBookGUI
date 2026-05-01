@@ -13,7 +13,7 @@ pluginManagement {
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
     id("dev.kikugie.stonecutter") version "0.9.2"
-//    id("dev.kikugie.loom-back-compat") version "0.2.1"
+    id("dev.kikugie.loom-back-compat") version "0.2.1"
 }
 
 fun getVersions(name: String): List<String> {

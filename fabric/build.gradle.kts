@@ -3,8 +3,7 @@
 plugins {
     kotlin("jvm")
     id("multiloader-loader")
-    id("fabric-loom")
-//    id("dev.kikugie.loom-back-compat")
+    id("dev.kikugie.loom-back-compat")
     id("dev.kikugie.fletching-table.fabric") version "0.1.0-alpha.22"
 }
 
