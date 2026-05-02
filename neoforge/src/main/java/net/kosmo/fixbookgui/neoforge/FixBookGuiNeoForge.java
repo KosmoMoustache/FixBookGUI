@@ -6,11 +6,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 
-//? if = 1.20.4 {
-/*@Mod(value = FixBookGui.MOD_ID)
- *///?} else {
-@Mod(value = FixBookGui.MOD_ID, dist = Dist.CLIENT)
-//?}
+@Mod(value = FixBookGui.MOD_ID/*? =1.20.4 {*//*?} else {*/, dist = Dist.CLIENT/*?}*/)
 public class FixBookGuiNeoForge {
     public FixBookGuiNeoForge(ModContainer modContainer, IEventBus modEventBus) {
         FixBookGui.init();
