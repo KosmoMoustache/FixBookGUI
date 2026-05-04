@@ -6,16 +6,15 @@ import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-//? if <=1.21.10 {
-/*import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.inventory.PageButton;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
-*///?}
 
-//? if >=1.21.11 {
+//? if <=1.21.10 {
+/*import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import net.minecraft.client.gui.screens.inventory.PageButton;
+import net.minecraft.client.gui.components.Button;
+*///?} else {
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-//?}
+//? }
 
 /**
  * @author mworzala (Implementation: KosmoMoustache)
@@ -53,27 +52,40 @@ public abstract class MixinBookViewScreen extends Screen {
     *///?}
 
     //? if <1.21.11 {
-    /*//~ if >=1.20.2 'render' -> 'renderBackground'
-    //~ if >=1.20.2 'Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"), index = 2' -> 'Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIII)V"), index = 2'
-    //~ if >=1.21.2 'Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIII)V"), index = 2' -> 'Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"), index = 3'
-    //~ if >=1.21.6 'Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"), index = 3' -> 'Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"), index = 3'
-    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"), index = 3)
+
+    /*//? if >=1.19.4 <1.20.2{
+    /^@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"), index = 2)
+    ^///?} elif >=1.20.2 <1.21.1{
+    /^@ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/Identifier;IIIIII)V"), index = 2)
+     ^///?} elif >=1.21.2 <1.21.6{
+    /^@ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/Identifier;IIFFIIII)V"), index = 3)
+     ^///?} elif >=1.21.6 {
+    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIII)V"), index = 3)
+     //?}
     public int fbg$renderBlit(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
 
-    //~ if >=1.20 'Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/network/chat/Component;FFI)I"), index = 3' -> 'Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)I"), index = 3'
-    //~ if >=1.21.10 'Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)I"), index = 3' -> 'Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)V"), index = 3'
+    //? if >=1.19.4 <1.20 {
+    /^@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/network/chat/Component;FFI)I"), index = 3)
+    ^///?} elif >=1.20 <1.21.10{
+    /^@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)I"), index = 3)
+     ^///?} elif >=1.21.10 {
     @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)V"), index = 3)
-    //~ if >=1.20.2 'float' -> 'int'
+     //?}
+            //~ if >=1.20.2 'float' -> 'int'
     public int fbg$renderStringComponent(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
 
-    //~ if >=1.20.2 'Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/util/FormattedCharSequence;FFI)I"), index = 3' -> 'Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;IIIZ)I"), index = 3'
-    //~ if >=1.20.10 'Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;IIIZ)I"), index = 3' -> 'Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;IIIZ)V"), index = 3'
+    //? if >=1.19.4 <1.20.2{
+    /^@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/util/FormattedCharSequence;FFI)I"), index = 3)
+    ^///?} elif >=1.20.2 <1.20.10 {
+    /^@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;IIIZ)I"), index = 3)
+     ^///?} elif >=1.20.10 {
     @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;IIIZ)V"), index = 3)
-    //~ if >=1.20.2 'float' -> 'int'
+     //?}
+            //~ if >=1.20.2 'float' -> 'int'
     public int fbg$renderStringFormattedCharSequence(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
