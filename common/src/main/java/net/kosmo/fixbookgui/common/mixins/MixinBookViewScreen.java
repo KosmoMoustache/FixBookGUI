@@ -31,83 +31,52 @@ public abstract class MixinBookViewScreen extends Screen {
     }
 
     //? if <=1.21.10 {
-    /*// ! SAME
-    @ModifyArg(method = "createMenuControls", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;"), index = 1)
+    /*@ModifyArg(method = "createMenuControls", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;"), index = 1)
     public int fbg$createMenuControls(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
 
-    // ! SAME
     @Redirect(method = "createPageControlButtons", at = @At(value = "NEW", target = "net/minecraft/client/gui/screens/inventory/PageButton"))
-    public PageButton fbg$addPageButtons(int x, int y, boolean isForward, Button.OnPress onPress, boolean playTurnSound) {
+    public PageButton fbg$createPageControlButtons(int x, int y, boolean isForward, Button.OnPress onPress, boolean playTurnSound) {
         return new PageButton(x, FixBookGui.getFixedY(this) + y, isForward, onPress, playTurnSound);
     }
 
-    // ! SAME
     @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;getClickedComponentStyleAt(DD)Lnet/minecraft/network/chat/Style;"), index = 1)
     public double fbg$getTextStyleAt(double y) {
         return y - (double) FixBookGui.getFixedY(this);
     }
 
-    // ! SAME
     @ModifyArg(method = "mouseClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;getClickedComponentStyleAt(DD)Lnet/minecraft/network/chat/Style;"), index = 1)
     public double fbg$mouseClicked(double y) {
         return y - (double) FixBookGui.getFixedY(this);
     }
+    *///?}
 
-    //? if >=1.21.8 {
-    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIII)V"), index = 3)
+    //? if <1.21.11 {
+    /*//~ if >=1.20.2 'render' -> 'renderBackground'
+    //~ if >=1.20.2 'Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"), index = 2' -> 'Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIII)V"), index = 2'
+    //~ if >=1.21.2 'Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIII)V"), index = 2' -> 'Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"), index = 3'
+    //~ if >=1.21.6 'Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"), index = 3' -> 'Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"), index = 3'
+    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/ResourceLocation;IIFFIIII)V"), index = 3)
     public int fbg$renderBlit(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
 
+    //~ if >=1.20 'Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/network/chat/Component;FFI)I"), index = 3' -> 'Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)I"), index = 3'
+    //~ if >=1.21.10 'Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)I"), index = 3' -> 'Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)V"), index = 3'
     @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)V"), index = 3)
-    public int fbg$renderDrawPageMsg(int y) {
+    //~ if >=1.20.2 'float' -> 'int'
+    public int fbg$renderStringComponent(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
 
+    //~ if >=1.20.2 'Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/util/FormattedCharSequence;FFI)I"), index = 3' -> 'Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;IIIZ)I"), index = 3'
+    //~ if >=1.20.10 'Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;IIIZ)I"), index = 3' -> 'Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;IIIZ)V"), index = 3'
     @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;IIIZ)V"), index = 3)
-    public int fbg$renderDrawFormattedCharSequence(int y) {
+    //~ if >=1.20.2 'float' -> 'int'
+    public int fbg$renderStringFormattedCharSequence(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
-
-    //?} elif >=1.20.2 {
-
-    /^//? if >=1.21.2 {
-    @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/Identifier;IIFFIIII)V"), index = 3)
-     //?} else {
-    /^¹@ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/Identifier;IIIIII)V"), index = 2)
-            ¹^///?}
-    public int fbg$renderBackgroundBlit(int y) {
-        return FixBookGui.getFixedY(this) + y;
-    }
-
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)I"), index = 3)
-    public int fbg$renderDrawStringPageMsg(int y) {
-        return FixBookGui.getFixedY(this) + y;
-    }
-
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/util/FormattedCharSequence;IIIZ)I"), index = 3)
-    public int fbg$renderDrawStringFormattedCharSequence(int y) {
-        return FixBookGui.getFixedY(this) + y;
-    }
-
-    ^///?} elif =1.19.4 {
-    /^@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/BookViewScreen;blit(Lcom/mojang/blaze3d/vertex/PoseStack;IIIIII)V"), index = 2)
-    public int fbg$renderBlit(int y) {
-        return FixBookGui.getFixedY(this) + y;
-    }
-
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/network/chat/Component;FFI)I"), index = 3)
-    public float fbg$renderDrawPageMsg(float y) {
-        return FixBookGui.getFixedY(this) + y;
-    }
-
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Font;draw(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/util/FormattedCharSequence;FFI)I"), index = 3)
-    public float fbg$renderDrawFormattedCharSequence(float y) {
-        return FixBookGui.getFixedY(this) + y;
-    }
-    ^///?}
     *///?} else {
     @ModifyReturnValue(method = "backgroundTop", at = @At("RETURN"))
     public int fbg$backgroundTop(int original) {
