@@ -3,7 +3,7 @@ plugins {
     id("com.google.devtools.ksp") version "2.3.6" apply false
     id("net.neoforged.moddev") version "2.0.140" apply false
 }
-stonecutter active "26.1" /* [SC] DO NOT EDIT */
+stonecutter active "26.2" /* [SC] DO NOT EDIT */
 
 stonecutter parameters  {
     replacements {
