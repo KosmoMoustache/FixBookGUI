@@ -12,6 +12,10 @@ kotlin {
     jvmToolchain(lproject.prop("java.version")!!.toInt())
 }
 
+stonecutter {
+    constants["mixin_debug"] = false;
+}
+
 fletchingTable {
     j52j.register("main") {
         extension("json", "**/*.json5")
