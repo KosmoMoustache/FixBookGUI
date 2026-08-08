@@ -39,13 +39,13 @@ dependencies {
     }
 
     compileOnly("org.spongepowered:mixin:0.8.5")
+    compileOnly("net.fabricmc:fabric-loader:${deps.floader}")
 
     "io.github.llamalad7:mixinextras-common:0.5.4".let {
         compileOnly(it)
         annotationProcessor(it)
     }
 
-    compileOnly("net.fabricmc:fabric-loader:${deps.floader}")
 }
 
 val commonJava: Configuration by configurations.creating {

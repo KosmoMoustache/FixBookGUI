@@ -32,7 +32,7 @@ dependencies {
     }
 
     modImplementation("net.fabricmc:fabric-loader:${deps.floader}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${deps.fapi}+${deps.minecraft}")
+    modApi("net.fabricmc.fabric-api:fabric-api:${deps.fapi}+${deps.minecraft}")
 }
 
 //Mixin hotswap
