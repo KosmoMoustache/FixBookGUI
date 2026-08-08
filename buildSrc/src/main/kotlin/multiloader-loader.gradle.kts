@@ -4,10 +4,11 @@ plugins {
     id("multiloader-common")
 }
 
-val commonJava: Configuration by configurations.creating {
+
+val commonJava = configurations.create("commonJava") {
     isCanBeResolved = true
 }
-val commonResources: Configuration by configurations.creating {
+val commonResources= configurations.create("commonResources") {
     isCanBeResolved = true
 }
 
@@ -24,12 +25,11 @@ tasks {
         source(commonJava)
     }
     named<ProcessResources>("processResources") {
-        // Only include the right aw file
-        from(commonResources) {
-            exclude("**/*.aw")
-        }
-        from(commonResources) {
-            include("${mod.aw_version}.aw")
-        }
+        dependsOn(commonResources)
+        from(commonResources)
+    }
+
+    jar {
+        exclude("accesswideners/**")
     }
 }

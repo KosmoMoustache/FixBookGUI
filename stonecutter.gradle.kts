@@ -5,18 +5,23 @@ plugins {
 }
 stonecutter active "26.2" /* [SC] DO NOT EDIT */
 
-stonecutter parameters  {
-    replacements {
+stonecutter {
+    parameters  {
+        constants["mixin_debug"] = providers.gradleProperty("mixinDebug").getOrElse("false").toBoolean();
+
+        filters.exclude("**/*.aw")
+        filters.exclude("**/*.cfg")
+
 //        string(current.parsed > "1.21.1") {
 //            replace("pushPose", "pushMatrix")
 //            replace("popPose", "popMatrix")
 //        }
 
-        string {
+        replacements.string {
             direction = eval(current.version, ">=1.21.11")
             replace("ResourceLocation", "Identifier")
         }
-        string {
+        replacements.string {
             direction = eval(current.version, ">=1.21.11")
             replace("import net.minecraft.Util;", "import net.minecraft.util.Util;")
         }

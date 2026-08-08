@@ -1,19 +1,12 @@
 @file:Suppress("UnstableApiUsage")
 
 plugins {
-    kotlin("jvm")
     id("multiloader-loader")
     id("dev.kikugie.loom-back-compat")
-    id("dev.kikugie.fletching-table.fabric") version "0.1.0-alpha.22"
-}
-
-// TODO: Useless ??
-kotlin {
-    jvmToolchain(lproject.prop("java.version")!!.toInt())
+    id("dev.kikugie.fletching-table.fabric") version "0.1.0-alpha.23"
 }
 
 stonecutter {
-    constants["mixin_debug"] = false;
 }
 
 fletchingTable {
@@ -21,7 +14,6 @@ fletchingTable {
         extension("json", "**/*.json5")
     }
 }
-
 
 dependencies {
     fun fabricModules(vararg modules: String) = modules.forEach {
@@ -52,7 +44,7 @@ afterEvaluate {
 }
 
 loom {
-    accessWidenerPath = common.project.file("../../src/main/resources/${mod.aw_version}.aw")
+    accessWidenerPath = common.project.file("../../src/main/resources/accesswideners/${mod.aw_version}.aw")
 
     runs {
         getByName("client") {
@@ -64,6 +56,13 @@ loom {
                 vmArgs("-XX:+AllowEnhancedClassRedefinition")
             }
             // "-Dfabric.log.level=debug"
+        }
+    }
+
+    if (stonecutter.eval(deps.minecraft, "<=1.21.11")) {
+        mixin {
+            useLegacyMixinAp = true
+            defaultRefmapName = "${mod.id}.refmap.json"
         }
     }
 }
@@ -78,4 +77,13 @@ tasks.named<ProcessResources>("processResources") {
             )
         }
     }
+
+    val awFile = common.project.file("../../src/main/resources/accesswideners/${mod.aw_version}.aw")
+
+    from(awFile.parentFile) {
+        include(awFile.name)
+        rename(awFile.name, "${mod.id}.aw")
+        into("")
+    }
 }
+

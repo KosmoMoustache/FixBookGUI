@@ -2,6 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "net.kosmo.fixbookgui.common.mixins",
+  "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_${java_version}",
   "mixins": [
   ],
