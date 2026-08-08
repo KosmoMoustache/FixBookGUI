@@ -1,9 +1,10 @@
 {
-	"required": true,
-	"minVersion": "0.8",
-	"package": "net.kosmo.fixbookgui.fabric.mixin",
-	"compatibilityLevel": "JAVA_${java_version}",
-	"injectors": {
-		"defaultRequire": 1
-	}
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.kosmo.fixbookgui.fabric.mixin",
+  "refmap": "${mod_id}.refmap.json",
+  "compatibilityLevel": "JAVA_${java_version}",
+  "injectors": {
+    "defaultRequire": 1
+  }
 }
