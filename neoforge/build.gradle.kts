@@ -62,7 +62,7 @@ sourceSets.main {
 
 tasks {
     named<ProcessResources>("processResources") {
-//        exclude("*.aw")
+        exclude("*.aw")
 
         // Rename neoforge.mods.toml to mods.toml
         if (stonecutterBuild.eval(stonecutterBuild.current.version, "<1.20.5")) {

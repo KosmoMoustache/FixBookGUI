@@ -60,7 +60,8 @@ public abstract class MixinBookSignScreen extends Screen {
 
     //~ if >26 'render' -> 'extractRenderState'
     //~ if >26 'GuiGraphics;drawWordWrap' -> 'GuiGraphicsExtractor;textWithWordWrap'
-    @ModifyArg(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;textWithWordWrap(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/FormattedText;IIIIZ)V"),
+    //~ if >=26.3 'FormattedText;IIIIZ)V' -> 'FormattedText;IIIIZ)I'
+    @ModifyArg(method = "extractRenderState", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;textWithWordWrap(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/FormattedText;IIIIZ)I"),
             index = 3)
     private int fbg$renderDrawWordWrapFinalizeWarningLabel(int y) {
         return FixBookGui.getFixedY(this) + y;
@@ -68,7 +69,8 @@ public abstract class MixinBookSignScreen extends Screen {
 
     //~ if >26 'renderBackground' -> 'extractBackground'
     //~ if >26 'GuiGraphics;blit' -> 'GuiGraphicsExtractor;blit'
-    @ModifyArg(method = "extractBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blit(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIII)V"),
+    //~ if >=26.3 'blaze3d' -> 'renderpearl/api'
+    @ModifyArg(method = "extractBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blit(Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIFFIIII)V"),
             index = 3)
     private int fbg$renderBackgroundBlit(int y) {
         return FixBookGui.getFixedY(this) + y;
