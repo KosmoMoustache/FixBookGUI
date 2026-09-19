@@ -38,6 +38,10 @@ dependencies {
         modApi("net.fabricmc.fabric-api:fabric-api:${deps.fapi}+${deps.minecraft}")
     }
 
+    if (sc.current.parsed.matches("<= 1.21.1") && sc.current.parsed.matches(">= 1.21")) {
+        modImplementation(fletchingTable.modrinth("amendments", deps.minecraft))
+        modImplementation(fletchingTable.modrinth("moonlight", deps.minecraft))
+    }
 }
 //Mixin hotswap
 afterEvaluate {
