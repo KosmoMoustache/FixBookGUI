@@ -1,7 +1,7 @@
 plugins {
     id("dev.kikugie.stonecutter")
     id("com.google.devtools.ksp") version "2.3.6" apply false
-    id("net.neoforged.moddev") version "2.0.140" apply false
+    id("net.neoforged.moddev") version "2.0.147" apply false
 }
 stonecutter active "26.2" /* [SC] DO NOT EDIT */
 

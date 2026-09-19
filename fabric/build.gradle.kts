@@ -32,14 +32,17 @@ dependencies {
     }
 
     modImplementation("net.fabricmc:fabric-loader:${deps.floader}")
-    modApi("net.fabricmc.fabric-api:fabric-api:${deps.fapi}+${deps.minecraft}")
-}
+    if (deps.fapi.contains('+')) {
+        modApi("net.fabricmc.fabric-api:fabric-api:${deps.fapi}")
+    } else {
+        modApi("net.fabricmc.fabric-api:fabric-api:${deps.fapi}+${deps.minecraft}")
+    }
 
 //Mixin hotswap
 afterEvaluate {
     loom.runs.configureEach {
         // https://fabricmc.net/wiki/tutorial:mixin_hotswaps
-        vmArg("-javaagent:${configurations.compileClasspath.get().find { it.name.contains("sponge-mixin") }}")
+        jvmArguments.add("-javaagent:${configurations.compileClasspath.get().find { it.name.contains("sponge-mixin") }}")
     }
 }
 
