@@ -38,6 +38,7 @@ dependencies {
         modApi("net.fabricmc.fabric-api:fabric-api:${deps.fapi}+${deps.minecraft}")
     }
 
+}
 //Mixin hotswap
 afterEvaluate {
     loom.runs.configureEach {
