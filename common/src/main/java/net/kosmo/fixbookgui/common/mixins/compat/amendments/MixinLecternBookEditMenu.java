@@ -1,4 +1,4 @@
-//? if 1.21 || 1.21.1 {
+//? if 1.20.1 || 1.21 || 1.21.1 {
 /*package net.kosmo.fixbookgui.common.mixins.compat.amendments;
 
 import net.kosmo.fixbookgui.common.FixBookGui;

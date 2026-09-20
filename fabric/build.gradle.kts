@@ -38,7 +38,7 @@ dependencies {
         modApi("net.fabricmc.fabric-api:fabric-api:${deps.fapi}+${deps.minecraft}")
     }
 
-    if (sc.current.parsed.matches("<= 1.21.1") && sc.current.parsed.matches(">= 1.21")) {
+    if (sc.current.parsed.matches("= 1.20.1") || (sc.current.parsed.matches("<= 1.21.1") && sc.current.parsed.matches(">= 1.21"))) {
         if (sc.current.parsed.matches("1.21.1")) {
             modLocalRuntime("net.mehvahdjukaar:codecui-fabric:1.21.1-1.4.0")
         }
