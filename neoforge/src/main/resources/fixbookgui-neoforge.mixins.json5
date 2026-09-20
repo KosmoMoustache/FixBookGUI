@@ -4,6 +4,8 @@
   "package": "net.kosmo.fixbookgui.neoforge.mixin",
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_${java_version}",
+  //? if 1.21 || 1.21.1
+  //"plugin": "net.kosmo.fixbookgui.neoforge.mixins.PlatformMixinPlugin",
   "injectors": {
     "defaultRequire": 1
   }

@@ -3,7 +3,6 @@ package net.kosmo.fixbookgui.common.mixins;
 import net.kosmo.fixbookgui.common.FixBookGui;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookEditScreen;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
 //? if <=1.21.5 {
@@ -22,7 +21,6 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
  * @author KosmoMoustache
  * @reason <a href="https://bugs.mojang.com/projects/MC/issues/MC-61489">Minecraft Bug Tracker</a>
  */
-@Debug(export = true)
 @Mixin(BookEditScreen.class)
 public abstract class MixinBookEditScreen extends Screen {
 

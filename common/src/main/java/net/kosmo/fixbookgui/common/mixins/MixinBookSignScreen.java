@@ -7,7 +7,6 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookSignScreen;
 import net.minecraft.network.chat.Component;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -17,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  * @author KosmoMoustache
  * @reason <a href="https://bugs.mojang.com/projects/MC/issues/MC-61489">Minecraft Bug Tracker</a>
  */
-@Debug(export = true)
 @Mixin(BookSignScreen.class)
 public abstract class MixinBookSignScreen extends Screen {
 

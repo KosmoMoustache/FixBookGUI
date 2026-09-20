@@ -22,7 +22,6 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
  * @reason <a href="https://bugs.mojang.com/projects/MC/issues/MC-61489">Minecraft Bug Tracker</a>
  * @see <a href="https://gist.github.com/mworzala/9a8d86803784c9c81aac77d9a7f9fb2b">Gist</a>
  */
-@Debug(export = true)
 @Mixin(BookViewScreen.class)
 public abstract class MixinBookViewScreen extends Screen {
 
