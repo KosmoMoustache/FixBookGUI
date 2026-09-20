@@ -1,9 +1,11 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.kosmo.fixbookgui.fabric.mixin",
+  "package": "net.kosmo.fixbookgui.fabric.mixins",
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_${java_version}",
+  //? if 1.21 || 1.21.1
+  //"plugin": "net.kosmo.fixbookgui.fabric.mixins.PlatformMixinPlugin",
   "injectors": {
     "defaultRequire": 1
   }

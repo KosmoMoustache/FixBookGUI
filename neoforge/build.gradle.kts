@@ -20,6 +20,10 @@ stonecutter {
 }
 
 dependencies {
+    if (sc.current.parsed.matches("<= 1.21.1") && sc.current.parsed.matches(">= 1.21")) {
+        implementation(fletchingTable.modrinth("amendments", deps.minecraft))
+        implementation(fletchingTable.modrinth("moonlight", deps.minecraft))
+    }
 }
 
 neoForge {
