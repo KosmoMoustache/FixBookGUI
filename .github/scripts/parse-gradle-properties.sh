@@ -26,6 +26,10 @@ parse_properties_file() {
         key=$(echo "$key" | tr '[:lower:]' '[:upper:]' | tr -c '[:alnum:]' '_')
         key=$(echo "$key" | sed 's/_$//')
 
+        if [[ "$key" == "JAVA_VERSION" ]] && [[ "$value" =~ ^[0-9]+$ ]] && (( value < 21 )); then
+            value=21
+        fi
+
         echo "${key}=${value}"
         set_output "$key" "$value"
     done < "$file"
