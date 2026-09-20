@@ -33,6 +33,8 @@ repositories {
 
     strictMaven("https://www.cursemaven.com", "Curseforge", "curse.maven")
     strictMaven("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth")
+
+    strictMaven("https://registry.somethingcatchy.net/repository/maven-releases/", "MehVahdJukaar", "net.mehvahdjukaar")
 }
 
 tasks.named<ProcessResources>("processResources") {

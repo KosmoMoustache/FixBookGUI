@@ -39,6 +39,7 @@ dependencies {
     }
 
     if (sc.current.parsed.matches("<= 1.21.1") && sc.current.parsed.matches(">= 1.21")) {
+        modLocalRuntime("net.mehvahdjukaar:codecui-fabric:1.21.1-1.4.0")
         modImplementation(fletchingTable.modrinth("amendments", deps.minecraft))
         modImplementation(fletchingTable.modrinth("moonlight", deps.minecraft))
     }

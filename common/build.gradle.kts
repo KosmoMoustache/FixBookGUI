@@ -47,8 +47,8 @@ dependencies {
     }
 
     if (sc.current.parsed.matches("<= 1.21.1") && sc.current.parsed.matches(">= 1.21")) {
-        modImplementation(fletchingTable.modrinth("amendments", deps.minecraft))
-        modImplementation(fletchingTable.modrinth("moonlight", deps.minecraft))
+        modCompileOnly(fletchingTable.modrinth("amendments", deps.minecraft))
+        modCompileOnly(fletchingTable.modrinth("moonlight", deps.minecraft))
     }
 }
 
