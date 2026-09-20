@@ -21,7 +21,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
-## [2.1.0] - TBD
+## [2.2.0] - 20/09/2026
+
+- Add compatibility with Amendment for MC 1.21 & 1.21.1
+
+## [2.1.0] - 01/04/2026
 
 - Ported to 26.1
 - Fix buttons position in Lectern GUI in 1.21.11
