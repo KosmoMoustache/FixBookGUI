@@ -3,7 +3,6 @@ package net.kosmo.fixbookgui.common.mixins;
 import net.kosmo.fixbookgui.common.FixBookGui;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 //? if <=1.21.10 {

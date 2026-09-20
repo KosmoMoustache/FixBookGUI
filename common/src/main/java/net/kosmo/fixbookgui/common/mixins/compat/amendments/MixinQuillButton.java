@@ -7,12 +7,10 @@ import net.mehvahdjukaar.amendments.client.gui.QuillButton;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-@Debug(export = false)
 @Mixin(QuillButton.class)
 public abstract class MixinQuillButton extends AbstractWidget {
     protected MixinQuillButton() {

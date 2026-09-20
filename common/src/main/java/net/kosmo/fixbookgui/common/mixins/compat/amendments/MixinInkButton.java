@@ -7,12 +7,10 @@ import net.mehvahdjukaar.amendments.client.gui.InkButton;
 import net.mehvahdjukaar.amendments.client.gui.LecternBookEditScreen;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-@Debug(export = false)
 @Mixin(InkButton.class)
 public abstract class MixinInkButton extends AbstractWidget {
     protected MixinInkButton() {

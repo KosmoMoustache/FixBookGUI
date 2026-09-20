@@ -4,12 +4,10 @@
 import net.kosmo.fixbookgui.common.FixBookGui;
 import net.mehvahdjukaar.amendments.client.gui.LecternBookEditScreen;
 import net.minecraft.client.gui.screens.Screen;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
-@Debug(export = false)
 @Mixin(LecternBookEditScreen.class)
 public abstract class MixinLecternBookEditMenu extends Screen {
     protected MixinLecternBookEditMenu() {
