@@ -60,11 +60,11 @@ loom {
     runs {
         getByName("client") {
             client()
-            configName = "Fabric Client"
-            ideConfigGenerated(true)
-            programArgs("--quickPlaySingleplayer", "wd_void", "--width", "1280", "--height", "720")
+            displayName = "Fabric Client"
+            generateRunConfig = true
+            programArguments.addAll("--quickPlaySingleplayer", "wd_void", "--width", "1280", "--height", "720")
             if (sc.current.parsed > "1.21.1") {
-                vmArgs("-XX:+AllowEnhancedClassRedefinition")
+                programArguments.add("-XX:+AllowEnhancedClassRedefinition")
             }
             // "-Dfabric.log.level=debug"
         }
@@ -82,7 +82,7 @@ tasks.named<ProcessResources>("processResources") {
     if (stonecutterBuild.eval(stonecutterBuild.current.version, "<1.21")) {
         doLast {
             moveAndDeleteFileOrFolder(
-                file("${layout.buildDirectory.get().toString()}/resources/main/"),
+                file("${layout.buildDirectory.get()}/resources/main/"),
                 "data/fixbookgui/function",
                 "data/fixbookgui/functions"
             )
