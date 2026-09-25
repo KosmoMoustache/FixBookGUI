@@ -53,7 +53,8 @@ for platform in $(echo "$enabled_platforms" | tr ',' ' '); do
     for version in $(echo "$versions" | tr ',' ' '); do
       if [[ ${#allowed_versions_array[@]} -eq 0 ]] || contains "$version" "${allowed_versions_array[@]}"; then
          if [[ "$platform" == "fabric" ]]; then
-            supported_mod_loaders="\"fabric\",\"quilt\""
+#            supported_mod_loaders="\"fabric\",\"quilt\""
+            supported_mod_loaders="\"fabric\""
          else
           supported_mod_loaders="\"$platform\""
          fi

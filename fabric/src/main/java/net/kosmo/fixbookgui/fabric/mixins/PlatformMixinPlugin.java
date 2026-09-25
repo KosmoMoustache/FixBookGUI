@@ -1,4 +1,4 @@
-//? if 1.21 || 1.21.1 {
+//? if 1.20.1 || 1.21 || 1.21.1 {
 /*package net.kosmo.fixbookgui.fabric.mixins;
 
 import net.fabricmc.loader.api.FabricLoader;

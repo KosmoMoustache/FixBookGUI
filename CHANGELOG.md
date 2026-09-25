@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 
+## [2.3.0] - 20/09/2026
+
+- Ported to 1.20.1 + Amendment compat
+
 ## [2.2.0] - 20/09/2026
 
 - Add compatibility with Amendment for MC 1.21 & 1.21.1

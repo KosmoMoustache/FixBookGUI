@@ -46,7 +46,7 @@ dependencies {
         annotationProcessor(it)
     }
 
-    if (sc.current.parsed.matches("<= 1.21.1") && sc.current.parsed.matches(">= 1.21")) {
+    if (sc.current.parsed.matches("= 1.20.1") || (sc.current.parsed.matches("<= 1.21.1") && sc.current.parsed.matches(">= 1.21"))) {
         modCompileOnly(fletchingTable.modrinth("amendments", deps.minecraft))
         modCompileOnly(fletchingTable.modrinth("moonlight", deps.minecraft))
     }

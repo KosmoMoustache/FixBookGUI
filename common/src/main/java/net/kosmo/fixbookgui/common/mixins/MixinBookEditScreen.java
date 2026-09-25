@@ -83,9 +83,9 @@ public abstract class MixinBookEditScreen extends Screen {
         return FixBookGui.getFixedY(this) + y;
     }
 
-    //?} elif >=1.20.2 {
-
-    /^//? if >=1.21.2 {
+    //?} elif >=1.20.1 {
+    /^//? if >=1.21 {
+    //? if >=1.21.2 {
     @ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Ljava/util/function/Function;Lnet/minecraft/resources/Identifier;IIFFIIII)V"), index = 3)
             //?} else {
     /^¹@ModifyArg(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/Identifier;IIIIII)V"), index = 2)
@@ -93,6 +93,12 @@ public abstract class MixinBookEditScreen extends Screen {
     public int fbg$renderBackgroundBlit(int y) {
         return FixBookGui.getFixedY(this) + y;
     }
+    //? } else {
+    /^¹@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/Identifier;IIIIII)V"), index = 2)
+    public int fbg$renderBackground(int y) {
+        return FixBookGui.getFixedY(this) + y;
+    }
+    ¹^///? }
 
     @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;IIIZ)I",
             ordinal = 0), index = 3)
