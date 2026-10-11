@@ -13,7 +13,10 @@ val Project._deps: DepsData get() = DepsData(this)
 
 val Project.common get() = requireNotNull(stonecutterBuild.node.sibling("common"))
 val Project.lproject get() = rootProject.project(stonecutterBuild.current.project)
-val Project.loader: String? get() = prop("loader")
+
+// 'loader' is declared in the branch project's gradle.properties (e.g. common/gradle.properties);
+// read it from the parent project explicitly to avoid the deprecated implicit parent lookup.
+val Project.loader: String? get() = parent?.prop("loader")
 
 val Project.mod get() = lproject._mod
 val Project.deps get() = lproject._deps
@@ -25,17 +28,23 @@ fun RepositoryHandler.strictMaven(url: String, alias: String, vararg groups: Str
 
 @JvmInline
 value class ModData(private val project: Project) {
-    val id: String get() = modProp("id")
-    val version: String get() = modProp("version")
-    val name: String get() = modProp("name")
-    val group: String get() = modProp("group")
-    val description: String get() = modProp("description")
-    val license: String get() = modProp("license")
-    val github: String get() = modProp("github")
+    val id: String get() = globalProp("id")
+    val version: String get() = globalProp("version")
+    val name: String get() = globalProp("name")
+    val group: String get() = globalProp("group")
+    val description: String get() = globalProp("description")
+    val license: String get() = globalProp("license")
+    val github: String get() = globalProp("github")
     val aw_version: String get() = modProp("aw_version")
     val fabric_mc_range: String get() = modProp("fabric_range")
     val neoforge_mc_range: String get() = modProp("neoforge_range")
 
+    // Global mod.* properties are declared in the root gradle.properties;
+    // read them from rootProject explicitly to avoid the deprecated implicit parent lookup.
+    fun globalPropOrNull(key: String) = project.rootProject.prop("mod.$key")?.takeIf { it.isNotEmpty() && it != ""}
+    fun globalProp(key: String) = requireNotNull(globalPropOrNull(key)) { "Missing 'mod.$key'" }
+
+    // Version-specific mod.* properties are declared in versions/<version>/gradle.properties.
     fun modPropOrNull(key: String) = project.prop("mod.$key")?.takeIf { it.isNotEmpty() && it != ""}
     fun modProp(key: String) = requireNotNull(modPropOrNull(key)) { "Missing 'mod.$key'" }
 }

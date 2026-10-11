@@ -6,7 +6,7 @@ pluginManagement {
             name = "Fabric"
             url = uri("https://maven.fabricmc.net/")
             content {
-                includeGroup("net.fabricmc")
+                includeGroupByRegex("net\\.fabricmc(\\..*)?")
             }
         }
         maven {
@@ -51,7 +51,7 @@ pluginManagement {
 plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
     id("dev.kikugie.stonecutter") version "0.9.8"
-    id("dev.kikugie.loom-back-compat") version "0.2.1"
+    id("dev.kikugie.loom-back-compat") version "0.4"
 }
 
 fun getVersions(name: String): List<String> {
@@ -67,6 +67,7 @@ val enabledUniqueVersions = enabledVersions.values.flatten().distinct()
 
 stonecutter {
     create(rootProject) {
+        vcsVersion = enabledUniqueVersions.last()
         versions(*enabledUniqueVersions.toTypedArray())
 
         enabledVersions.forEach { (branchName, branchVersions) ->
