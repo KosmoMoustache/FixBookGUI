@@ -1,11 +1,10 @@
-
 plugins {
     id("java")
     id("idea")
     id("java-library")
 }
 
-version = "${project.loader}-${mod.version}+mc${stonecutterBuild.current.version}"
+version = "${loader}-${mod.version}+mc${stonecutterBuild.current.version}"
 
 base {
     archivesName = mod.id
